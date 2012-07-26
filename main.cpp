@@ -48,6 +48,8 @@ using namespace io;
 int main()
 {
 	irrgamePlayer* player = createIrrgamePlayer();
+
+	player->getFileSystem();
 	//create player instance
 
 	//read  config
