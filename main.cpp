@@ -47,10 +47,10 @@ using namespace io;
 
 int main()
 {
-
+	irrgamePlayer* player = createIrrgamePlayer();
 	//create player instance
 
-	//read config
+	//read  config
 
 	//get pointer to game lib
 	void* app_handle;
