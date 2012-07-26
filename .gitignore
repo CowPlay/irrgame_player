@@ -10,3 +10,16 @@
 *.lai
 *.la
 *.a
+
+#MacOsX
+.DS_Store
+
+Debug/makefile
+
+#eclipse
+.settings/**
+Debug/**
+.project
+.cproject
+*.mk
+*.d

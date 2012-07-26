@@ -1,2 +1,2 @@
-irrgame_player
-==============
+irrgame_sdk
+===========
