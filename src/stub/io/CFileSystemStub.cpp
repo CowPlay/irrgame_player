@@ -766,36 +766,36 @@ namespace irrgame
 			return reader;
 		}
 
-//		//! Creates a XML Reader from a file.
-//		IXMLReader* CFileSystemStub::createXMLReader(IReadFile* file)
-//		{
-//			if (!file)
-//				return 0;
-//
-//			return createIXMLReader(file);
-//		}
+		//! Creates a XML Reader from a file.
+		IXMLReader* CFileSystemStub::createXMLReader(IReadFile* file)
+		{
+			if (!file)
+				return 0;
 
-//		//! Creates a XML Reader from a file.
-//		IXMLReaderUTF8* CFileSystemStub::createXMLReaderUTF8(
-//				const io::path& filename)
-//		{
-//			IReadFile* file = createAndOpenFile(filename);
-//			if (!file)
-//				return 0;
-//
-//			IXMLReaderUTF8* reader = createIXMLReaderUTF8(file);
-//			file->drop();
-//			return reader;
-//		}
+			return irrgame::io::createXMLReader(file);
+		}
 
-//		//! Creates a XML Reader from a file.
-//		IXMLReaderUTF8* CFileSystemStub::createXMLReaderUTF8(IReadFile* file)
-//		{
-//			if (!file)
-//				return 0;
-//
-//			return createIXMLReaderUTF8(file);
-//		}
+		//! Creates a XML Reader from a file.
+		IXMLReaderUTF8* CFileSystemStub::createXMLReaderUTF8(
+				const io::path& filename)
+		{
+			IReadFile* file = createAndOpenFile(filename);
+			if (!file)
+				return 0;
+
+			IXMLReaderUTF8* reader = irrgame::io::createXMLReaderUTF8(file);
+			file->drop();
+			return reader;
+		}
+
+		//! Creates a XML Reader from a file.
+		IXMLReaderUTF8* CFileSystemStub::createXMLReaderUTF8(IReadFile* file)
+		{
+			if (!file)
+				return 0;
+
+			return irrgame::io::createXMLReaderUTF8(file);
+		}
 
 		//! Creates a XML Writer from a file.
 		IXMLWriter* CFileSystemStub::createXMLWriter(const io::path& filename)
@@ -806,18 +806,13 @@ namespace irrgame
 			return writer;
 		}
 
-//		//! Creates a XML Writer from a file.
-//		IXMLWriter* CFileSystemStub::createXMLWriter(IWriteFile* file)
-//		{
-//			return new CXMLWriter(file);
-//		}
+		//! Creates a XML Writer from a file.
+		IXMLWriter* CFileSystemStub::createXMLWriter(IWriteFile* file)
+		{
+			return irrgame::io::createXMLWriter(file);
+		}
 
-//		//! creates a filesystem which is able to open files from the ordinary file system,
-//		//! and out of zipfiles, which are able to be added to the filesystem.
-//		IFileSystem* createFileSystem()
-//		{
-//			return new CFileSystem();
-//		}
+
 
 //		//! Creates a new empty collection of attributes, usable for serialization and more.
 //		IAttributes* CFileSystemStub::createEmptyAttributes(

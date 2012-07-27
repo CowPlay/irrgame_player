@@ -119,23 +119,23 @@ namespace irrgame
 
 				//! Creates a XML Reader from a file.
 				virtual IXMLReader* createXMLReader(const io::path& filename);
-//
-//				//! Creates a XML Reader from a file.
-//				virtual IXMLReader* createXMLReader(IReadFile* file);
-//
+
 				//! Creates a XML Reader from a file.
-//				virtual IXMLReaderUTF8* createXMLReaderUTF8(
-//						const io::path& filename);
-//
-//				//! Creates a XML Reader from a file.
-//				virtual IXMLReaderUTF8* createXMLReaderUTF8(IReadFile* file);
-//
+				virtual IXMLReader* createXMLReader(IReadFile* file);
+
+				//! Creates a XML Reader from a file.
+				virtual IXMLReaderUTF8* createXMLReaderUTF8(
+						const io::path& filename);
+
+				//! Creates a XML Reader from a file.
+				virtual IXMLReaderUTF8* createXMLReaderUTF8(IReadFile* file);
+
 				//! Creates a XML Writer from a file.
 				virtual IXMLWriter* createXMLWriter(const io::path& filename);
-//
-//				//! Creates a XML Writer from a file.
-//				virtual IXMLWriter* createXMLWriter(IWriteFile* file);
-//
+
+				//! Creates a XML Writer from a file.
+				virtual IXMLWriter* createXMLWriter(IWriteFile* file);
+
 //				//! Creates a new empty collection of attributes, usable for serialization and more.
 //				virtual IAttributes* createEmptyAttributes(
 //						video::IVideoDriver* driver);

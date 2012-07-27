@@ -12,6 +12,8 @@ namespace irrgame
 {
 	namespace io
 	{
+		//! Represents a class which is able to open files from the ordinary file system,
+		//! and out of zipfiles, which are able to be added to the filesystem.
 		class CFileSystemMac: public CFileSystemStub
 		{
 			public:
