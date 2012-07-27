@@ -18,11 +18,14 @@ namespace irrgame
 
 			//! Gets pointer to filesystem
 			//! @return - pointer to filesystem
-			virtual void getFileSystem();
+			virtual io::IFileSystem* getFileSystem();
 
 		protected:
 			//!Default constructor
 			irrgamePlayerStub();
+
+		protected:
+			io::IFileSystem* FileSystem;
 	};
 }
 

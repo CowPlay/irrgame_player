@@ -6,8 +6,8 @@
 #define __C_READ_FILE_H_INCLUDED__
 
 #include <stdio.h>
-#include "IReadFile.h"
-#include "irrString.h"
+#include "./io/IReadFile.h"
+#include "./core/irrString.h"
 
 namespace irrgame
 {

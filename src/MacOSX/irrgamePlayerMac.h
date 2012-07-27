@@ -7,7 +7,7 @@
 
 #ifndef IRRGAMEPLAYERMAC_H_
 #define IRRGAMEPLAYERMAC_H_
-#include "irrgamePlayerStub.h"
+#include "./stub/irrgamePlayerStub.h"
 namespace irrgame
 {
 	class irrgamePlayerMac: public irrgamePlayerStub
@@ -16,6 +16,9 @@ namespace irrgame
 
 			//! Default constructor
 			irrgamePlayerMac();
+
+			//! Destructor
+			virtual ~irrgamePlayerMac();
 
 	};
 }

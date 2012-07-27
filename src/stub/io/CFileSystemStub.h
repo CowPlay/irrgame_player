@@ -5,9 +5,9 @@
 #ifndef __C_FILE_SYSTEM_H_INCLUDED__
 #define __C_FILE_SYSTEM_H_INCLUDED__
 
-#include "IFileSystem.h"
+#include "./io/IFileSystem.h"
 
-#include "irrArray.h"
+#include "./core/irrArray.h"
 
 namespace irrgame
 {
@@ -123,7 +123,7 @@ namespace irrgame
 //				//! Creates a XML Reader from a file.
 //				virtual IXMLReader* createXMLReader(IReadFile* file);
 //
-//				//! Creates a XML Reader from a file.
+				//! Creates a XML Reader from a file.
 //				virtual IXMLReaderUTF8* createXMLReaderUTF8(
 //						const io::path& filename);
 //

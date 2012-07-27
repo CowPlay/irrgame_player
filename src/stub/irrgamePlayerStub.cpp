@@ -8,7 +8,8 @@
 namespace irrgame
 {
 	//!Default constructor
-	irrgamePlayerStub::irrgamePlayerStub()
+	irrgamePlayerStub::irrgamePlayerStub() :
+			FileSystem(0)
 	{
 
 	}
@@ -21,9 +22,9 @@ namespace irrgame
 
 	//! Gets pointer to filesystem
 	//! @return - pointer to filesystem
-	void irrgamePlayerStub::getFileSystem()
+	io::IFileSystem* irrgamePlayerStub::getFileSystem()
 	{
-
+		return FileSystem;
 	}
 
 }

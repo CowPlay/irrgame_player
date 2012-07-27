@@ -6,8 +6,8 @@
 #define __C_WRITE_FILE_H_INCLUDED__
 
 #include <stdio.h>
-#include "IWriteFile.h"
-#include "irrString.h"
+#include "./io/IWriteFile.h"
+#include "./core/irrString.h"
 
 namespace irrgame
 {

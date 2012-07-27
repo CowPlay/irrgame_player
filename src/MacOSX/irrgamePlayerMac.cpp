@@ -5,14 +5,21 @@
  *      Author: gregorytkach
  */
 #include "irrgamePlayerMac.h"
-
+#include "./MacOSX/io/CFileSystemMac.h"
 namespace irrgame
 {
 
 	//! Default constructor
 	irrgamePlayerMac::irrgamePlayerMac()
 	{
+		FileSystem = new io::CFileSystemMac;
+	}
 
+	//! Destructor
+	irrgamePlayerMac::~irrgamePlayerMac()
+	{
+		if(FileSystem)
+			FileSystem->drop();
 	}
 
 	//! irrgamePlayer creator
@@ -20,4 +27,6 @@ namespace irrgame
 	{
 		return new irrgamePlayerMac;
 	}
+
+
 }
