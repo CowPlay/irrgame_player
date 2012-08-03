@@ -18,7 +18,7 @@ namespace irrgame
 	//! Destructor
 	irrgamePlayerMac::~irrgamePlayerMac()
 	{
-		if(FileSystem)
+		if (FileSystem)
 			FileSystem->drop();
 	}
 
@@ -27,6 +27,5 @@ namespace irrgame
 	{
 		return new irrgamePlayerMac;
 	}
-
 
 }
