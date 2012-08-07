@@ -47,10 +47,19 @@ using namespace io;
 
 int main()
 {
+	IFileSystem::getAbsolutePath("");
+
+	//create player instance
 	irrgamePlayer* player = createIrrgamePlayer();
 
-	player->getFileSystem();
-	//create player instance
+	player->readConfig("");
+//	IXMLReaderUTF8* xml = player->getFileSystem()->createXMLReaderUTF8("./assets/config.xml");
+
+//	if(!xml)
+//	{
+//		player->drop();
+//		return 0;
+//	}
 
 	//read  config
 
@@ -64,7 +73,7 @@ int main()
 	//app->run();
 
 
-	//onApplicationSusped();
+	//onApplicationSuspend();
 
 
 
@@ -83,6 +92,7 @@ int main()
 
 
 
+	//irrgameThread::sleep();
 	return 0;
 }
 

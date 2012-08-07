@@ -7,7 +7,7 @@
 
 #ifndef IRGAMEPLAYERCOMPILECONFIG_H_
 #define IRGAMEPLAYERCOMPILECONFIG_H_
-
+#include "irrgamesdkCompileConfig.h"
 
 
 

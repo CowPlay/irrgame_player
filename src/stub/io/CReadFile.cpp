@@ -12,7 +12,7 @@ namespace irrgame
 		CReadFile::CReadFile(const io::path& fileName) :
 				File(0), FileSize(0), Filename(fileName)
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			setDebugName("CReadFile");
 #endif
 
@@ -67,11 +67,7 @@ namespace irrgame
 				return;
 			}
 
-#if defined ( _IRR_WCHAR_FILESYSTEM )
-			File = _wfopen(Filename.c_str(), L"rb");
-#else
 			File = fopen(Filename.c_str(), "rb");
-#endif
 
 			if (File)
 			{

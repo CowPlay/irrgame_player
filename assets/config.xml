@@ -1,5 +1,8 @@
+<!--This is an irrgame player config file-->
 <root>
-	<attributes>
-		<string	name = ""	value = ""/>
-	</attributes>
+	<application>
+		<attributes>
+			<string	name = "application"	value = "../thegame/Debug/libthegame.a"/>
+		</attributes>
+	</application>
 </root>

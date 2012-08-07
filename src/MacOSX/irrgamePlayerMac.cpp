@@ -12,14 +12,12 @@ namespace irrgame
 	//! Default constructor
 	irrgamePlayerMac::irrgamePlayerMac()
 	{
-		FileSystem = new io::CFileSystemMac;
 	}
 
 	//! Destructor
 	irrgamePlayerMac::~irrgamePlayerMac()
 	{
-		if (FileSystem)
-			FileSystem->drop();
+
 	}
 
 	//! irrgamePlayer creator
