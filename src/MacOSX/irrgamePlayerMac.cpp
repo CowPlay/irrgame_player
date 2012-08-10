@@ -5,7 +5,6 @@
  *      Author: gregorytkach
  */
 #include "irrgamePlayerMac.h"
-#include "./MacOSX/io/CFileSystemMac.h"
 namespace irrgame
 {
 

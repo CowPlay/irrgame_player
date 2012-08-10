@@ -16,7 +16,7 @@ namespace irrgame
 			//! Destructor
 			virtual ~irrgamePlayerStub();
 
-			virtual void readConfig(const io::path& file);
+			virtual void readConfig(const core::stringc& file);
 
 			//! Gets pointer to filesystem
 			//! @return - pointer to filesystem

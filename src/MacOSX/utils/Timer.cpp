@@ -5,7 +5,7 @@
  *      Author: gregorytkach
  */
 
-#include "./utils/Timer.h"
+#include "utils/Timer.h"
 #include <time.h>
 #include <sys/time.h>
 namespace irrgame
@@ -13,12 +13,14 @@ namespace irrgame
 	namespace utils
 	{
 		//! returns the current time in milliseconds
+		//! Platform dependies
 		void Timer::initTimer()
 		{
 			initVirtualTimer();
 		}
 
 		//! initializes the real timer
+		//! Platform dependies
 		u32 Timer::getRealTime()
 		{
 			timeval tv;

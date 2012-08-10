@@ -5,7 +5,7 @@
  *      Author: gregorytkach
  */
 #include "irrgame.h"
-
+#include "stub/io/CFileSystem.h"
 using namespace irrgame;
 
 using namespace io;
@@ -47,6 +47,10 @@ using namespace io;
 
 int main()
 {
+	CFileSystem* fs = new CFileSystem;
+	fs->getWorkingDirectory();
+
+	IFileSystem::createAndOpenFile("");
 	IFileSystem::getAbsolutePath("");
 
 	//create player instance

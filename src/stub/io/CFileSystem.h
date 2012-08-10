@@ -5,9 +5,9 @@
 #ifndef __C_FILE_SYSTEM_H_INCLUDED__
 #define __C_FILE_SYSTEM_H_INCLUDED__
 
-#include "./io/IFileSystem.h"
+#include "io/IFileSystem.h"
 
-#include "./core/irrArray.h"
+#include "core/irrArray.h"
 
 namespace irrgame
 {
@@ -21,47 +21,16 @@ namespace irrgame
 		/*!
 		 FileSystem which uses normal files and one zipfile
 		 */
-		class CFileSystemStub: public IFileSystem
+		class CFileSystem: public IFileSystem
 		{
-				//! Static
 			public:
 
-				//! Creates a XML Reader from a file.
-				virtual IXMLReader* createXMLReader(const io::path& filename);
+				//! Default constructor
+//				CFileSystem();
 
-				//! Creates a XML Reader from a file.
-				virtual IXMLReader* createXMLReader(IReadFile* file);
+				//! destructor
+//				virtual ~CFileSystem();
 
-				//! Instance
-			public:
-
-//				//! constructor
-//				CFileSystemStub();
-//
-//				//! destructor
-//				virtual ~CFileSystemStub();
-//
-//				//! opens a file for read access
-//				virtual IReadFile* createAndOpenFile(const io::path& filename);
-//
-//				//! Creates an IReadFile interface for accessing memory like a file.
-//				virtual IReadFile* createMemoryReadFile(void* memory, s32 len,
-//						const io::path& fileName, bool deleteMemoryWhenDropped =
-//								false);
-//
-//				//! Creates an IReadFile interface for accessing files inside files
-//				virtual IReadFile* createLimitReadFile(const io::path& fileName,
-//						IReadFile* alreadyOpenedFile, long pos, long areaSize);
-//
-//				//! Creates an IWriteFile interface for accessing memory like a file.
-//				virtual IWriteFile* createMemoryWriteFile(void* memory, s32 len,
-//						const io::path& fileName, bool deleteMemoryWhenDropped =
-//								false);
-//
-//				//! Opens a file for write access.
-//				virtual IWriteFile* createAndWriteFile(const io::path& filename,
-//						bool append = false);
-//
 //				//! Adds an archive to the file system.
 //				virtual bool addFileArchive(const io::path& filename,
 //						bool ignoreCase = true, bool ignorePaths = true,
@@ -141,16 +110,10 @@ namespace irrgame
 ////				virtual IAttributes* createEmptyAttributes(
 ////						video::IVideoDriver* driver);
 //
-//			private:
+			private:
 //
-//				//! Currently used FileSystemType
-//				EFileSystemType FileSystemType;
-//				//! WorkingDirectory for Native and Virtual filesystems
-//				io::path WorkingDirectory[2];
-//				//! currently attached ArchiveLoaders
-//				core::array<IArchiveLoader*> ArchiveLoader;
-//				//! currently attached Archives
-//				core::array<IFileArchive*> FileArchives;
+
+
 		};
 
 	} // end namespace irr

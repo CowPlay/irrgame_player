@@ -11,7 +11,7 @@ namespace irrgame
 {
 	namespace io
 	{
-		void CConfigReader::readConfig(const path& file)
+		void CConfigReader::readConfig(const core::stringc& file)
 		{
 			int i = 0;
 		}

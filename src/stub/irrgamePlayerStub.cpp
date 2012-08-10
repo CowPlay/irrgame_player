@@ -24,7 +24,7 @@ namespace irrgame
 			FileSystem->drop();
 	}
 
-	void irrgamePlayerStub::readConfig(const io::path& file)
+	void irrgamePlayerStub::readConfig(const core::stringc& file)
 	{
 		io::CConfigReader::readConfig(file);
 	}

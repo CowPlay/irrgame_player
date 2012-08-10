@@ -8,7 +8,7 @@
 #ifndef CCONFIGREADER_H_
 #define CCONFIGREADER_H_
 
-#include "io/IXMLReader.h"
+#include "io/xml/IXMLReader.h"
 #include "io/SPath.h"
 
 namespace irrgame
@@ -19,7 +19,7 @@ namespace irrgame
 		{
 
 			public:
-				static void readConfig(const path& file);
+				static void readConfig(const core::stringc& file);
 
 			private:
 				//! Parse <application/>
