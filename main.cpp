@@ -9,6 +9,7 @@
 using namespace irrgame;
 
 using namespace io;
+using namespace threads;
 
 //#include "irrgamePlayer.h"
 
@@ -27,7 +28,6 @@ using namespace io;
 //   if (!lib_handle)
 //   {
 //      fprintf(stderr, "%s\n", dlerror());
-//      exit(1);
 //   }
 //
 //   fn = dlsym(lib_handle, "ctest1");
@@ -37,68 +37,121 @@ using namespace io;
 //      exit(1);
 //   }
 //
+//      exit(1);
 //   (*fn)(&x);
 //   printf("Valx=%d\n",x);
 //
 //   dlclose(lib_handle);
 //   return 0;
 //}
-
-
-int main()
+#include "pthread.h"
+class C1
 {
-	CFileSystem* fs = new CFileSystem;
-	fs->getWorkingDirectory();
+	public:
+		int func1(void* arg)
+		{
+//			sched_param param;
+//			sched_get_priority_max( )
+//			sched_set
+//			sched_setscheduler(irrgameThread::getCurrentThreadID(),);
+//			()
+			while (true)
+				printf("1\n");
 
-	IFileSystem::createAndOpenFile("");
-	IFileSystem::getAbsolutePath("");
+			return 0;
+		}
 
-	//create player instance
-	irrgamePlayer* player = createIrrgamePlayer();
+		int func2(void* arg)
+		{
+			while (true)
+				printf("2\n");
 
-	player->readConfig("");
-//	IXMLReaderUTF8* xml = player->getFileSystem()->createXMLReaderUTF8("./assets/config.xml");
+			return 0;
+		}
 
-//	if(!xml)
-//	{
-//		player->drop();
-//		return 0;
-//	}
+		int func3(void* arg)
+		{
+			while (true)
+				printf("3\n");
 
-	//read  config
-
-	//get pointer to game lib
-	void* app_handle;
-	app_handle = dlopen("../../thegame/", RTLD_LAZY);
-
-	//get application pointer
-
-	//irrgameApp app = new irrgameApp(player instance);
-	//app->run();
-
-
-	//onApplicationSuspend();
-
+			return 0;
+		}
+};
 
 
-//	void * my_lib_handle;
-//	int (*some_func)();
+//int main()
+//{
 //
-//		my_lib_handle = dlopen("libmylib.so",RTLD_NOW);
-//		if(my_lib_handle==NULL) {
-//			/* ERROR HANDLING */
-//		}
-//		some_func = (int (*)()) dlsym(my_lib_handle,"some_function");
-//		if(some_func==NULL) {
-//			/* ERROR HANDLING */
-//		}
-//		printf("Return code is %i\n",(*some_func)());
-
-
-
-	//irrgameThread::sleep();
-	return 0;
-}
-
-
+////	int max = -777;
+////	max = sched_get_priority_max(SCHED_OTHER);
+//
+////	int min = -777;
+////	min = sched_get_priority_min(SCHED_OTHER);
+//
+//	C1* instance = new C1;
+//
+//	delegateThreadCallback* del1 = new delegateThreadCallback;
+//	*del1 += NewDelegate(instance, &C1::func1);
+//	irrgameThread* th1 = createIrrgameThread(del1, 0, ETP_LOW);
+//	th1->start();
+//
+//	delegateThreadCallback* del2 = new delegateThreadCallback;
+//	*del2 += NewDelegate(instance, &C1::func2);
+//	irrgameThread* th2 = createIrrgameThread(del2, 0, ETP_NORMAL);
+//	th2->start();
+//
+////	delegateThreadCallback* del3 = new delegateThreadCallback;
+////	*del3 += NewDelegate(instance, &C1::func3);
+////	irrgameThread* th3 = createIrrgameThread(del3, 0, ETP_HIGH);
+////	th3->start();
+//
+////	fs->getWorkingDirectory();
+//
+////	IReadFile* file = IFileSystem::createReadFile("README.md");
+////	file->grab();
+//
+//	th2->join();
+//
+////	pause();
+//	//create player instance
+////	irrgamePlayer* player = createIrrgamePlayer();
+//
+////	player->readConfig("");
+////	IXMLReaderUTF8* xml = player->getFileSystem()->createXMLReaderUTF8("./assets/config.xml");
+//
+////	if(!xml)
+////	{
+////		player->drop();
+////		return 0;
+////	}
+//
+////read  config
+//
+////get pointer to game lib
+////	void* app_handle;
+////	app_handle = dlopen("../../thegame/", RTLD_LAZY);
+//
+////get application pointer
+//
+////irrgameApp app = new irrgameApp(player instance);
+////app->run();
+//
+////onApplicationSuspend();
+//
+////	void * my_lib_handle;
+////	int (*some_func)();
+////
+////		my_lib_handle = dlopen("libmylib.so",RTLD_NOW);
+////		if(my_lib_handle==NULL) {
+////			/* ERROR HANDLING */
+////		}
+////		some_func = (int (*)()) dlsym(my_lib_handle,"some_function");
+////		if(some_func==NULL) {
+////			/* ERROR HANDLING */
+////		}
+////		printf("Return code is %i\n",(*some_func)());
+//
+////irrgameThread::sleep();
+//	return 0;
+//}
 

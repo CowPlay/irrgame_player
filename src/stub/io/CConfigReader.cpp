@@ -13,7 +13,7 @@ namespace irrgame
 	{
 		void CConfigReader::readConfig(const core::stringc& file)
 		{
-			int i = 0;
+//			int i = 0;
 		}
 
 		//! Parse <application/>

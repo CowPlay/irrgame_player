@@ -10,7 +10,6 @@
 #ifndef IRRGAMEPLAYERMAC_H_
 #define IRRGAMEPLAYERMAC_H_
 #include "./stub/irrgamePlayerStub.h"
-#include "wchar.h"
 namespace irrgame
 {
 	class irrgamePlayerMac: public irrgamePlayerStub
