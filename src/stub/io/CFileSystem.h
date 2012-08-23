@@ -7,7 +7,7 @@
 
 #include "io/IFileSystem.h"
 
-#include "core/irrArray.h"
+#include "core/irrgamecollections.h"
 
 namespace irrgame
 {
@@ -28,7 +28,7 @@ namespace irrgame
 				//! Default constructor
 //				CFileSystem();
 
-				//! destructor
+//! destructor
 //				virtual ~CFileSystem();
 
 //				//! Adds an archive to the file system.
@@ -112,7 +112,6 @@ namespace irrgame
 //
 			private:
 //
-
 
 		};
 

@@ -45,7 +45,7 @@ namespace irrgame
 		//@ param2 - input parameter
 		CirrgameThreadPOSIX::CirrgameThreadPOSIX(
 				delegateThreadCallback* callback, void* callbackArg,
-				EThreadPriority prior, core::stringc name) :
+				EThreadPriority prior, stringc name) :
 				Priority(prior), Handle(0)
 		{
 			Callback = callback;
@@ -66,23 +66,33 @@ namespace irrgame
 		{
 			s32 error = 0;
 
-//			s32 min = 0, max = 0;
-//			min = sched_get_priority_min(SCHED_FIFO);
-//			max = sched_get_priority_max(SCHED_FIFO);
-
 			sched_param param;
+			s32 policy = SCHED_FIFO;
 
-			pthread_attr_t attr;
-			error = pthread_attr_init(&attr);
-			IRR_ASSERT(error == 0);
+//			pthread_attr_t attr;
+			// init attr
+//			error = pthread_attr_init(&attr);
+//			IRR_ASSERT(error == 0);
 
 //			error = pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
 //			IRR_ASSERT(error == 0);
 
-			error = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+//			error = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+//			IRR_ASSERT(error == 0);
+
+//			error = pthread_attr_setschedpolicy(&attr, policy);
+//			IRR_ASSERT(error == 0);
+
+			error = pthread_create(&Handle, 0,
+					reinterpret_cast<pthread_callback>(ProceedFunc), this);
 			IRR_ASSERT(error == 0);
 
-			s32 policy = SCHED_FIFO;
+//			error = pthread_attr_destroy(&attr);
+//			IRR_ASSERT(error == 0);
+
+			//init param
+			error = pthread_getschedparam(Handle, &policy, &param);
+			IRR_ASSERT(error == 0);
 
 			s32 minPrio = sched_get_priority_min(SCHED_FIFO);
 			s32 maxPrio = sched_get_priority_max(SCHED_FIFO);
@@ -108,18 +118,12 @@ namespace irrgame
 				}
 			}
 
-			error = pthread_attr_setschedpolicy(&attr, policy);
-			IRR_ASSERT(error == 0);
-
-			error = pthread_create(&Handle, &attr,
-					reinterpret_cast<pthread_callback>(ProceedFunc), this);
-			IRR_ASSERT(error == 0);
-
-			error = pthread_attr_destroy(&attr);
-			IRR_ASSERT(error == 0);
-
 			error = pthread_setschedparam(Handle, policy, &param);
 			IRR_ASSERT(error == 0);
+
+//			//check param
+//			error = pthread_getschedparam(Handle, &policy, &param);
+//			IRR_ASSERT(error == 0);
 		}
 
 		//! Blocks the calling thread until a thread terminates.
@@ -138,7 +142,7 @@ namespace irrgame
 
 		//! irrgameThread creator. Internal function. Please do not use.
 		irrgameThread* createIrrgameThread(delegateThreadCallback* callback,
-				void* callbackArg, EThreadPriority prior, core::stringc name)
+				void* callbackArg, EThreadPriority prior, stringc name)
 		{
 			return new CirrgameThreadPOSIX(callback, callbackArg, prior, name);
 		}

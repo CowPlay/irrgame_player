@@ -5,46 +5,17 @@
  *      Author: gregorytkach
  */
 #include "irrgame.h"
-#include "stub/io/CFileSystem.h"
+#include "irrgamePlayerConstants.h"
+
 using namespace irrgame;
 
+using namespace actions;
 using namespace io;
 using namespace threads;
 
-//#include "irrgamePlayer.h"
-
 #include <stdio.h>
 #include <dlfcn.h>
-//#include "ctest.h"
 
-//int main(int argc, char **argv)
-//{
-//   void *lib_handle;
-//   double (*fn)(int *);
-//   int x;
-//   char *error;
-//
-//   lib_handle = dlopen("/opt/lib/libctest.so", RTLD_LAZY);
-//   if (!lib_handle)
-//   {
-//      fprintf(stderr, "%s\n", dlerror());
-//   }
-//
-//   fn = dlsym(lib_handle, "ctest1");
-//   if ((error = dlerror()) != NULL)
-//   {
-//      fprintf(stderr, "%s\n", error);
-//      exit(1);
-//   }
-//
-//      exit(1);
-//   (*fn)(&x);
-//   printf("Valx=%d\n",x);
-//
-//   dlclose(lib_handle);
-//   return 0;
-//}
-#include "pthread.h"
 class C1
 {
 	public:
@@ -78,6 +49,38 @@ class C1
 		}
 };
 
+#define signature_app_creator irrgameApp* (*)()
+
+int main()
+{
+	irrgamePlayer * player = createIrrgamePlayer();
+
+	player->getConfigReader()->read(FILE_CONFIG);
+
+	void* appHandle;
+
+	irrgameApp* (*createIrrgameApp)();
+
+	appHandle = dlopen(player->getConfigReader()->getEntry()->AppFile.c_str(),
+			RTLD_NOW);
+
+	c8* error = 0;
+	error = dlerror();
+	IRR_ASSERT(error == 0);
+
+	createIrrgameApp = (signature_app_creator) dlsym(appHandle,
+			player->getConfigReader()->getEntry()->AppCreator.c_str());
+
+	error = dlerror();
+	IRR_ASSERT(error == 0);
+
+	irrgameApp* app = createIrrgameApp();
+
+	IRR_ASSERT(app != 0);
+
+	app->run();
+
+}
 
 //int main()
 //{

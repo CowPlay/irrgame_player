@@ -5,35 +5,29 @@
  *      Author: gregorytkach
  */
 #include "irrgamePlayerStub.h"
-#include "io/IFileSystem.h"
-#include "io/CConfigReader.h"
+#include "actions/IActionScheduler.h"
 namespace irrgame
 {
 	//!Default constructor
 	irrgamePlayerStub::irrgamePlayerStub() :
-			FileSystem(0)
+			ConfigReader(0)
 	{
-//		FileSystem = io::createFileSystem();
-		//create and run thread pool
+		ConfigReader = io::createPlayerConfigReader();
+
+		//create and run actions pool
+		actions::IActionScheduler::getInstance().startProcess();
 	}
 
 	//! Destructor
 	irrgamePlayerStub::~irrgamePlayerStub()
 	{
-		if (FileSystem)
-			FileSystem->drop();
+		if (ConfigReader)
+			ConfigReader->drop();
 	}
 
-	void irrgamePlayerStub::readConfig(const core::stringc& file)
+	io::IPlayerConfigReader* irrgamePlayerStub::getConfigReader()
 	{
-		io::CConfigReader::readConfig(file);
-	}
-
-	//! Gets pointer to filesystem
-	//! @return - pointer to filesystem
-	io::IFileSystem* irrgamePlayerStub::getFileSystem()
-	{
-		return FileSystem;
+		return ConfigReader;
 	}
 
 }

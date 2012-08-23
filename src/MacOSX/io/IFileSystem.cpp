@@ -26,9 +26,10 @@ namespace irrgame
 		//! Platform dependies
 		/** \param filename Possibly relative file or directory name to query.
 		 \result Absolute filename which points to the same file. */
-		core::stringc IFileSystem::getAbsolutePath(
-				const core::stringc& filename)
+		stringc IFileSystem::getAbsolutePath(const stringc& filename)
 		{
+			IRR_ASSERT(filename.size() > 0);
+
 			c8* p = 0;
 			c8 fpath[4096];
 			fpath[0] = 0;
@@ -39,22 +40,22 @@ namespace irrgame
 				// content in fpath is unclear at this point
 				if (!fpath[0]) // seems like fpath wasn't altered, use our best guess
 				{
-					core::stringc tmp(filename);
-					return IFileSystem::flattenFilename(tmp);
+					stringc tmp(filename);
+					return flattenFilename(tmp);
 				}
 				else
-					return core::stringc(fpath);
+					return stringc(fpath);
 			}
 
 			if (filename[filename.size() - 1] == '/')
-				return core::stringc(p) + "/";
+				return stringc(p) + "/";
 			else
-				return core::stringc(p);
+				return stringc(p);
 		}
 
 		//! Returns the string of the current working directory
 		//! Platform dependies
-		const core::stringc& IFileSystem::getWorkingDirectory()
+		const stringc& IFileSystem::getWorkingDirectory()
 		{
 			EFileSystemType type = FileSystemType;
 
@@ -84,7 +85,7 @@ namespace irrgame
 		}
 
 		//! Changes the current Working Directory to the given string.
-		bool IFileSystem::changeWorkingDirectoryTo(const core::stringc& value)
+		bool IFileSystem::changeWorkingDirectoryTo(const stringc& value)
 		{
 			bool success = false;
 
@@ -106,7 +107,7 @@ namespace irrgame
 		}
 
 		//! determines if a file exists and would be able to be opened.
-		bool IFileSystem::existFile(const core::stringc& filename)
+		bool IFileSystem::existFile(const stringc& filename)
 		{
 			return (access(filename.c_str(), 0) != -1);
 		}
@@ -115,7 +116,7 @@ namespace irrgame
 		IFileList* IFileSystem::createFileList()
 		{
 			IFileList* result = 0;
-			core::stringc Path = getWorkingDirectory();
+			stringc Path = getWorkingDirectory();
 			Path.replace('\\', '/');
 			if (Path.lastChar() != '/')
 				Path.append('/');
@@ -123,7 +124,7 @@ namespace irrgame
 			//! Construct from native filesystem
 			if (FileSystemType == FILESYSTEM_NATIVE)
 			{
-				core::stringc fullPath;
+				stringc fullPath;
 
 				result = irrgame::io::createFileList(Path, false, false);
 
@@ -182,7 +183,7 @@ namespace irrgame
 						if (io::isInSameDirectory(Path,
 								merge->getFullFileName(j)) == 0)
 						{
-							core::stringc fullPath = merge->getFullFileName(j);
+							stringc fullPath = merge->getFullFileName(j);
 							result->addItem(fullPath, merge->getFileSize(j),
 									merge->isDirectory(j), 0);
 						}
@@ -196,7 +197,7 @@ namespace irrgame
 			return result;
 		}
 
-	}
-}
+	}		//end namespace io
+}		//end namespace irrgame
 #endif
 

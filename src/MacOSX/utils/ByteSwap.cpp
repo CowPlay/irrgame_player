@@ -10,8 +10,8 @@
 
 #ifdef _IRRGAME_MACOSX_
 
-#include "./core/irrMath.h"
-#include "./utils/ByteSwap.h"
+#include "core/irrgamemath.h"
+#include "utils/ByteSwap.h"
 #include <libkern/OSByteOrder.h>
 
 #define bswap_16(X) OSReadSwapInt16(&X,0)

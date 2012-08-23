@@ -26,7 +26,7 @@ namespace irrgame
 				//@ param2 - input parameter
 				CirrgameThreadPOSIX(delegateThreadCallback* callback,
 						void* callbackArg = NULL, EThreadPriority prior =
-								ETP_NORMAL, core::stringc name = "");
+								ETP_NORMAL, stringc name = "");
 
 				//! Destructor
 				virtual ~CirrgameThreadPOSIX();

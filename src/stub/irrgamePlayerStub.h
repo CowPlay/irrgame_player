@@ -16,18 +16,16 @@ namespace irrgame
 			//! Destructor
 			virtual ~irrgamePlayerStub();
 
-			virtual void readConfig(const core::stringc& file);
-
-			//! Gets pointer to filesystem
-			//! @return - pointer to filesystem
-			virtual io::IFileSystem* getFileSystem();
+			//! Gets pointer to config reader
+			//! @return - pointer to config reader
+			virtual io::IPlayerConfigReader* getConfigReader();
 
 		protected:
 			//!Default constructor
 			irrgamePlayerStub();
 
 		protected:
-			io::IFileSystem* FileSystem;
+			io::IPlayerConfigReader* ConfigReader;
 	};
 }
 
