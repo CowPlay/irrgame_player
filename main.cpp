@@ -16,18 +16,18 @@ using namespace threads;
 #include <stdio.h>
 #include <dlfcn.h>
 
+arrayi mass;
+
 class C1
 {
 	public:
 		int func1(void* arg)
 		{
-//			sched_param param;
-//			sched_get_priority_max( )
-//			sched_set
-//			sched_setscheduler(irrgameThread::getCurrentThreadID(),);
-//			()
 			while (true)
+			{
 				printf("1\n");
+				irrgameThread::sleep(1000);
+			}
 
 			return 0;
 		}
@@ -35,8 +35,10 @@ class C1
 		int func2(void* arg)
 		{
 			while (true)
+			{
 				printf("2\n");
-
+				irrgameThread::sleep(1000);
+			}
 			return 0;
 		}
 
@@ -53,6 +55,23 @@ class C1
 
 int main()
 {
+	arrayi mass1;
+	mass1.pushBack(1);
+	mass1[0] = 2;
+	C1* instance = new C1;
+
+	delegateThreadCallback* del1 = new delegateThreadCallback;
+	*del1 += NewDelegate(instance, &C1::func1);
+	irrgameThread* th1 = createIrrgameThread(del1, 0, ETP_LOW);
+	th1->start();
+
+	delegateThreadCallback* del2 = new delegateThreadCallback;
+	*del2 += NewDelegate(instance, &C1::func2);
+	irrgameThread* th2 = createIrrgameThread(del2, 0, ETP_NORMAL);
+	th2->start();
+
+	th2->join();
+
 	irrgamePlayer * player = createIrrgamePlayer();
 
 	player->getConfigReader()->read(FILE_CONFIG);
@@ -61,7 +80,7 @@ int main()
 
 	irrgameApp* (*createIrrgameApp)();
 
-	appHandle = dlopen(player->getConfigReader()->getEntry()->AppFile.c_str(),
+	appHandle = dlopen(player->getConfigReader()->getEntry()->AppFile.cStr(),
 			RTLD_NOW);
 
 	c8* error = 0;
@@ -69,7 +88,7 @@ int main()
 	IRR_ASSERT(error == 0);
 
 	createIrrgameApp = (signature_app_creator) dlsym(appHandle,
-			player->getConfigReader()->getEntry()->AppCreator.c_str());
+			player->getConfigReader()->getEntry()->AppCreator.cStr());
 
 	error = dlerror();
 	IRR_ASSERT(error == 0);

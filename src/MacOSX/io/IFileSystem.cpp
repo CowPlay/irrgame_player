@@ -33,7 +33,7 @@ namespace irrgame
 			c8* p = 0;
 			c8 fpath[4096];
 			fpath[0] = 0;
-			p = realpath(filename.c_str(), fpath);
+			p = realpath(filename.cStr(), fpath);
 
 			if (!p)
 			{
@@ -97,7 +97,7 @@ namespace irrgame
 			}
 			else
 			{
-				success = (chdir(value.c_str()) == 0);
+				success = (chdir(value.cStr()) == 0);
 
 				if (success)
 					WorkingDirectory[FILESYSTEM_NATIVE] = value;
@@ -109,7 +109,7 @@ namespace irrgame
 		//! determines if a file exists and would be able to be opened.
 		bool IFileSystem::existFile(const stringc& filename)
 		{
-			return (access(filename.c_str(), 0) != -1);
+			return (access(filename.cStr(), 0) != -1);
 		}
 
 		//! Creates a list of files and directories in the current working directory
@@ -131,7 +131,7 @@ namespace irrgame
 				result->addItem(Path + "..", 0, true, 0);
 
 				//! We use the POSIX compliant methods instead of scandir
-				DIR* dirHandle = opendir(Path.c_str());
+				DIR* dirHandle = opendir(Path.cStr());
 				if (dirHandle)
 				{
 					struct dirent *dirEntry;

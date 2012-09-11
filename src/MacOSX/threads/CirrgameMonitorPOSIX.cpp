@@ -13,12 +13,16 @@ namespace irrgame
 		//! Default constructor
 		CirrgameMonitorPOSIX::CirrgameMonitorPOSIX()
 		{
+#ifdef DEBUG
+			setDebugName("CirrgameMonitorPOSIX");
+#endif
 			pthread_mutex_init(&Handle, 0);
 		}
 
 		//! Destructor
 		CirrgameMonitorPOSIX::~CirrgameMonitorPOSIX()
 		{
+
 			pthread_mutex_destroy(&Handle);
 		}
 
@@ -27,12 +31,16 @@ namespace irrgame
 		//! in the critical section using a different locked object.
 		void CirrgameMonitorPOSIX::enter()
 		{
+			//TODO:experimental
+			grab();
 			pthread_mutex_lock(&Handle);
 		}
 
 		//! Releases the lock on an object. This action also marks the end of a critical section protected by the locked object.
 		void CirrgameMonitorPOSIX::exit()
 		{
+			//TODO:experimental
+			drop();
 			pthread_mutex_unlock(&Handle);
 		}
 

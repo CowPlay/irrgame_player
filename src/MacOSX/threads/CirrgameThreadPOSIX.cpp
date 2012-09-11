@@ -17,10 +17,10 @@ namespace irrgame
 	{
 		//! Causes the operating system to sleep current thread.
 		//! Platform dependies
-		//@ param0 - time in msec.
+		//@ param0 - time in ms.
 		void irrgameThread::sleep(s32 time)
 		{
-			usleep(time);
+			usleep(time * 1000);
 		}
 
 		//! Returns current thread id
@@ -48,6 +48,9 @@ namespace irrgame
 				EThreadPriority prior, stringc name) :
 				Priority(prior), Handle(0)
 		{
+#ifdef DEBUG
+			setDebugName("CirrgameThreadPOSIX");
+#endif
 			Callback = callback;
 			CallbackArg = callbackArg;
 			Name = name;
