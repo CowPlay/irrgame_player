@@ -4,7 +4,7 @@
  *  Created on: Aug 7, 2012
  *      Author: gregorytkach
  */
-#include "irrgamePlayerCompileConfig.h"
+#include "playerCompileConfig.h"
 #ifdef _IRRGAME_MACOSX_
 
 #include "io/IFileSystem.h"
@@ -78,7 +78,7 @@ namespace irrgame
 					WorkingDirectory[FILESYSTEM_NATIVE] = tmpPath;
 					delete[] tmpPath;
 				}
-				WorkingDirectory[type].validate();
+//				WorkingDirectory[type].validate();
 			}
 
 			return WorkingDirectory[type];

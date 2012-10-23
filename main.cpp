@@ -5,73 +5,25 @@
  *      Author: gregorytkach
  */
 #include "irrgame.h"
-#include "irrgamePlayerConstants.h"
+#include "playerConstants.h"
 
 using namespace irrgame;
 
-using namespace actions;
+using namespace events;
 using namespace io;
 using namespace threads;
 
 #include <stdio.h>
 #include <dlfcn.h>
 
+#include <typeinfo>
+
 arrayi mass;
-
-class C1
-{
-	public:
-		int func1(void* arg)
-		{
-			while (true)
-			{
-				printf("1\n");
-				irrgameThread::sleep(1000);
-			}
-
-			return 0;
-		}
-
-		int func2(void* arg)
-		{
-			while (true)
-			{
-				printf("2\n");
-				irrgameThread::sleep(1000);
-			}
-			return 0;
-		}
-
-		int func3(void* arg)
-		{
-			while (true)
-				printf("3\n");
-
-			return 0;
-		}
-};
 
 #define signature_app_creator irrgameApp* (*)()
 
 int main()
 {
-	arrayi mass1;
-	mass1.pushBack(1);
-	mass1[0] = 2;
-	C1* instance = new C1;
-
-	delegateThreadCallback* del1 = new delegateThreadCallback;
-	*del1 += NewDelegate(instance, &C1::func1);
-	irrgameThread* th1 = createIrrgameThread(del1, 0, ETP_LOW);
-	th1->start();
-
-	delegateThreadCallback* del2 = new delegateThreadCallback;
-	*del2 += NewDelegate(instance, &C1::func2);
-	irrgameThread* th2 = createIrrgameThread(del2, 0, ETP_NORMAL);
-	th2->start();
-
-	th2->join();
-
 	irrgamePlayer * player = createIrrgamePlayer();
 
 	player->getConfigReader()->read(FILE_CONFIG);
@@ -97,9 +49,62 @@ int main()
 
 	IRR_ASSERT(app != 0);
 
-	app->run();
-
+	player->run(app);
 }
+
+//#include <OpenGL/gl.h>
+//#include <OpenGL/glu.h>
+//#include <GLUT/glut.h>
+//#define window_width  640
+//#define window_height 480
+//// Main loop
+//void main_loop_function() {
+//    // Z angle
+//    static float angle;
+//    // Clear color (screen)
+//    // And depth (used internally to block obstructed objects)
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    // Load identity matrix
+//    glLoadIdentity();
+//    // Multiply in translation matrix
+//    glTranslatef(0, 0, -10);
+//    // Multiply in rotation matrix
+//    glRotatef(angle, 0, 0, 1);
+//    // Render colored quad
+//    glBegin( GL_QUADS);
+//    glColor3ub(255, 000, 000);
+//    glVertex2f(-1, 1);
+//    glColor3ub(000, 255, 000);
+//    glVertex2f(1, 1);
+//    glColor3ub(000, 000, 255);
+//    glVertex2f(1, -1);
+//    glColor3ub(255, 255, 000);
+//    glVertex2f(-1, -1);
+//    glEnd();
+//    // Swap buffers (color buffers, makes previous render visible)
+//    glutSwapBuffers();
+//    // Increase angle to rotate
+//    angle += 0.25;
+//}
+//// Initialze OpenGL perspective matrix
+//void GL_Setup(int width, int height) {
+//    glViewport(0, 0, width, height);
+//    glMatrixMode( GL_PROJECTION);
+//    glEnable( GL_DEPTH_TEST);
+//    gluPerspective(45, (float) width / height, .1, 100);
+//    glMatrixMode( GL_MODELVIEW);
+//}
+//// Initialize GLUT and start main loop
+//int main(int argc, char** argv) {
+//    glutInit(&argc, argv);
+//    glutInitWindowSize(window_width, window_height);
+//    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+//    glutCreateWindow("GLUT Example!!!");
+//    glutDisplayFunc(main_loop_function);
+//    glutIdleFunc(main_loop_function);
+//    GL_Setup(window_width, window_height);
+//    glutMainLoop();
+//}
 
 //int main()
 //{

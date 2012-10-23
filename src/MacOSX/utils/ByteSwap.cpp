@@ -6,7 +6,7 @@
  *      Author: gregorytkach
  */
 
-#include "./irrgamesdkCompileConfig.h"
+#include "./core/base/compileConfig.h"
 
 #ifdef _IRRGAME_MACOSX_
 

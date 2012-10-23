@@ -28,8 +28,10 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../irrgame_sdk/Release&quot;"/>
 								</option>
 								<option id="macosx.cpp.link.option.libs.399479791" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="irrgame_sdk"/>
+									<listOptionValue builtIn="false" value="irrgame_sdk"/>
+									<listOptionValue builtIn="false" value="objc"/>
 								</option>
+								<option id="macosx.cpp.link.option.flags.754989762" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-framework corefoundation -framework opengl -framework glut -framework carbon" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.1420901538" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -48,7 +50,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1300834652" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../irrgame_sdk/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../irrgame_sdk/include/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../irrgame_sdk/src/&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.warnings.extrawarn.757296481" name="Extra warnings (-Wextra)" superClass="gnu.cpp.compiler.option.warnings.extrawarn" value="false" valueType="boolean"/>
