@@ -23,7 +23,7 @@ namespace irrgame
 	namespace io
 	{
 		//! Converts a relative path to an absolute (unique) path, resolving symbolic links if required
-		//! Platform dependies
+		//! Platform dependent
 		/** \param filename Possibly relative file or directory name to query.
 		 \result Absolute filename which points to the same file. */
 		stringc IFileSystem::getAbsolutePath(const stringc& filename)
@@ -54,7 +54,7 @@ namespace irrgame
 		}
 
 		//! Returns the string of the current working directory
-		//! Platform dependies
+		//! Platform dependent
 		const stringc& IFileSystem::getWorkingDirectory()
 		{
 			EFileSystemType type = FileSystemType;

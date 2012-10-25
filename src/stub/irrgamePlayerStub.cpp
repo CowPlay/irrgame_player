@@ -13,8 +13,8 @@ namespace irrgame
 {
 	//!Default constructor
 	irrgamePlayerStub::irrgamePlayerStub() :
-			ConfigReader(0), SceneManager(0), VideoDriver(0), VideoModeList(0), UserEventsHandler(
-					0)
+			ConfigReader(0), SceneManager(0), VideoDriver(0), VideoModeList(0), UserEventsHandler(0),
+			Timer(0)
 	{
 		ConfigReader = io::createPlayerConfigReader();
 
@@ -78,6 +78,9 @@ namespace irrgame
 
 		while (runInternal())
 		{
+
+			utils::ITimer::tick();
+
 			events::IEventScheduler::getInstance().proceedNextRealTimeEvent();
 
 			VideoDriver->beginScene();
@@ -88,31 +91,5 @@ namespace irrgame
 		//stop events handler
 		UserEventsHandler->stopEventProcess();
 	}
-
-
-
-////! send the event to the right receiver
-//	void CIrrDeviceStub::postEventFromUser(const SEvent& event)
-//		{
-//		bool absorbed = false;
-//
-//		if (UserReceiver)
-//			absorbed = UserReceiver->OnEvent(event);
-//
-//		if (!absorbed && GUIEnvironment)
-//			absorbed = GUIEnvironment->postEventFromUser(event);
-//
-//		scene::ISceneManager* inputReceiver = InputReceivingSceneManager;
-//
-//		if (!inputReceiver)
-//			inputReceiver = SceneManager;
-//
-//		if (!absorbed && inputReceiver)
-//			absorbed = inputReceiver->postEventFromUser(event);
-//
-//		_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
-//		return absorbed;
-//		}
-
 }
 

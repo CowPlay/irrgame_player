@@ -21,7 +21,7 @@ namespace irrgame
 			public:
 
 				//! Default constructor
-				//! Platform dependies
+				//! Platform dependent
 				//@ param1 - thread name
 				//@ param2 - input parameter
 				CirrgameThreadPOSIX(delegateThreadCallback* callback,
@@ -32,15 +32,15 @@ namespace irrgame
 				virtual ~CirrgameThreadPOSIX();
 
 				//! Causes the operating system to start thread, and optionally supplies an object containing data to be used by the method the thread executes
-				//! Platform dependies
+				//! Platform dependent
 				virtual void start();
 
 				//! Blocks the calling thread until a thread terminates.
-				//! Platform dependies
+				//! Platform dependent
 				virtual void join();
 
 				//! Causes the operating system to kill thread
-				//! Platform dependies
+				//! Platform dependent
 //				virtual void kill();
 
 			protected:

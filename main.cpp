@@ -28,7 +28,7 @@ int main()
 
 	player->getConfigReader()->read(FILE_CONFIG);
 
-	void* appHandle;
+	void* appHandle = 0;
 
 	irrgameApp* (*createIrrgameApp)();
 

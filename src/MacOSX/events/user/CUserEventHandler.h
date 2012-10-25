@@ -34,9 +34,9 @@ namespace irrgame
 
 			protected:
 				//Platform dependent
-				void initKeyMap();
+				virtual void initKeyMap();
 				//Platform dependent
-				void initCursorsInfo();
+				virtual void initCursorsInfo();
 		};
 
 	} /* namespace events */

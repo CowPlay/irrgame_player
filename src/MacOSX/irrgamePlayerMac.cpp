@@ -44,9 +44,11 @@ namespace irrgame
 				SEND_OBJC_MESSAGE_WITH_OBJECT((CLASS("NSApp")), "setDelegate:", delegate),
 				"autorelease");
 
+		/*
 		objc_msgSend((CLASS("NSBundle")), SELECTOR("loadNibNamed:owner:"),
 				(CFSTR("MainMenu") ),
 				(SEND_OBJC_MESSAGE(CLASS("NSApp"), "delegate")));
+		 */
 
 		SEND_OBJC_MESSAGE(CLASS("NSApp"), "finishLaunching");
 
@@ -194,8 +196,11 @@ namespace irrgame
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "setDelegate:",
 				SEND_OBJC_MESSAGE(CLASS("NSApp"), "delegate"));
 
-		SEND_OBJC_MESSAGE_WITH_OBJECT(OGLContext, "setView:",
-				SEND_OBJC_MESSAGE(Window, "contentView"));
+		id contentView = SEND_OBJC_MESSAGE(Window, "contentView");
+
+		IRR_ASSERT(contentView);
+
+		SEND_OBJC_MESSAGE_WITH_OBJECT(OGLContext, "setView:", contentView);
 
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "setAcceptsMouseMovedEvents:",
 				true);
@@ -204,13 +209,12 @@ namespace irrgame
 
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "makeKeyAndOrderFront:", NULL);
 
-		CGLContext =
-				(CGLContextObj) SEND_OBJC_MESSAGE(OGLContext, "CGLContextObj");
+		CGLContext = (CGLContextObj) SEND_OBJC_MESSAGE(OGLContext, "CGLContextObj");
 
-		CGLSetCurrentContext(CGLContext);
+		//CGLSetCurrentContext(CGLContext);
 
-		GLint newSwapInterval = 1; // enable vsync
-		CGLSetParameter(CGLContext, kCGLCPSwapInterval, &newSwapInterval);
+		//GLint newSwapInterval = 1; // enable vsync
+		//CGLSetParameter(CGLContext, kCGLCPSwapInterval, &newSwapInterval);
 	}
 
 	//! Run player internal. Must be overriden in every realization of player.
@@ -223,7 +227,7 @@ namespace irrgame
 
 		id event; //NSEvent *event;
 
-		//		os::Timer::tick();
+
 		//		storeMouseLocation();
 		//
 		event = objc_msgSend(CLASS("NSApp"),
@@ -234,39 +238,45 @@ namespace irrgame
 		//		event = [NSApp nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:YES];
 
 		if (!event)
-			return result;
-
-//		bzero(&ievent,sizeof(ievent));
-		intptr_t eventType = (intptr_t) SEND_OBJC_MESSAGE(event, "type");
-
-		switch (eventType)
 		{
-			case 1: //NSLeftMouseDown
-			case 2: //NSLeftMouseUp
-			case 3: //NSRightMouseDown
-			case 4: //NSRightMouseUp
-			case 5: //NSMouseMoved
-			case 6: //NSLeftMouseDragged
-			case 7: //NSRightMouseDragged
-			case 22: //NSScrollWheel
+			// TODO
+			//handle cursor stopped event
+
+		}
+		else
+		{
+//		bzero(&ievent,sizeof(ievent));
+			intptr_t eventType = (intptr_t) SEND_OBJC_MESSAGE(event, "type");
+
+			switch (eventType)
+			{
+				case 1: //NSLeftMouseDown
+				case 2: //NSLeftMouseUp
+				case 3: //NSRightMouseDown
+				case 4: //NSRightMouseUp
+				case 5: //NSMouseMoved
+				case 6: //NSLeftMouseDragged
+				case 7: //NSRightMouseDragged
+				case 22: //NSScrollWheel
 //			case 25: //NSOtherMouseDown
 //			case 26: //NSOtherMouseUp
-			case 27: //NSOtherMouseDragged
+				case 27: //NSOtherMouseDragged
 
-			{
-				UserEventsHandler->handleMouseEvent(event);
-				break;
-			}
-			case 10: //NSKeyDown
-			case 11: //NSKeyUp
-			case 12: //NSFlagsChanged
-			{
-				UserEventsHandler->handleKeyEvent(event);
-				break;
-			}
-			default:
+				{
+					UserEventsHandler->handleMouseEvent(event);
+					break;
+				}
+				case 10: //NSKeyDown
+				case 11: //NSKeyUp
+				case 12: //NSFlagsChanged
+				{
+					UserEventsHandler->handleKeyEvent(event);
+					break;
+				}
+				default:
 //				[NSApp sendEvent:event];
-				break;
+					break;
+			}
 		}
 		return result;
 	}

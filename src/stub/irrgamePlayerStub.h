@@ -17,6 +17,7 @@
 #include "events/user/SCursorInfo.h"
 #include "events/user/EUserKeys.h"
 #include "events/user/EUserKeyStates.h"
+#include "utils/ITimer.h"
 
 namespace irrgame
 {
@@ -39,6 +40,9 @@ namespace irrgame
 			 * */
 			virtual events::IUserEventHandler* getUserEventsHandler();
 
+			//! Returns player timer
+//			virtual utils::ITimer* getTimer();
+
 			virtual void run(irrgameApp* application);
 
 		protected:
@@ -59,7 +63,7 @@ namespace irrgame
 			video::IVideoDriver* VideoDriver;
 			video::IVideoModeList* VideoModeList;
 			events::IUserEventHandler* UserEventsHandler;
-
+			utils::ITimer* Timer;
 
 	};
 }

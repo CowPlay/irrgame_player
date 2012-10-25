@@ -20,8 +20,12 @@ namespace irrgame
 	{
 
 		//! Default constructor
-		CUserEventHandler::CUserEventHandler()
+		CUserEventHandler::CUserEventHandler() :
+				IUserEventHandler()
 		{
+			initKeyMap();
+			initCursorsInfo();
+			initKeyStates();
 		}
 
 		//! Destructor
@@ -86,7 +90,8 @@ namespace irrgame
 
 			objc_object* event = (objc_object*) e;
 
-			EUserKeys key;
+			EUserKeys key = EUK_COUNT;
+			EUserKeyStates keyState = EUKS_COUNT;
 
 			core::map<s32, EUserKeys>::Iterator it;
 
@@ -170,19 +175,7 @@ namespace irrgame
 			}
 
 			//create event
-
-//
-//				userEvent = createUserEvent();
-//				//			ievent.EventType = irr::EET_KEY_INPUT_EVENT;
-//				//			ievent.KeyInput.Key = (irr::EKEY_CODE)mkey;
-//				//			ievent.KeyInput.PressedDown = pressed;
-//				//			ievent.KeyInput.Char = mchar;
-//				//
-//				//			if (skipCommand)
-//				//			{
-//				//				ievent.KeyInput.Control = true;
-//				//			}
-//				//
+			userEvent = createUserEvent(key, keyState);
 
 			this->onEvent(userEvent);
 
@@ -260,13 +253,13 @@ namespace irrgame
 				}
 				default:
 				{
+					//not implemented
 					IRR_ASSERT(false);
 					break;
 				}
 			}
 
 			userEvent = createUserEvent(cursorInfo);
-//		cursorInfo = new SCursorInfo(0, )
 
 			this->onEvent(userEvent);
 		}
