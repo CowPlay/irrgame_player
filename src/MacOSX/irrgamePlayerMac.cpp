@@ -103,7 +103,6 @@ namespace irrgame
 		};
 
 		CGRect rect = CGRectMake(0, 0, 800, 600);
-//		{ 0, 0, 800, 600 };
 
 		Window = objc_msgSend(SEND_OBJC_MESSAGE(CLASS("NSWindow"), "alloc"),
 				SELECTOR("initWithContentRect:styleMask:backing:defer:"), rect,
@@ -211,7 +210,7 @@ namespace irrgame
 
 		CGLContext = (CGLContextObj) SEND_OBJC_MESSAGE(OGLContext, "CGLContextObj");
 
-		//CGLSetCurrentContext(CGLContext);
+		CGLSetCurrentContext(CGLContext);
 
 		//GLint newSwapInterval = 1; // enable vsync
 		//CGLSetParameter(CGLContext, kCGLCPSwapInterval, &newSwapInterval);

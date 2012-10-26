@@ -15,6 +15,15 @@
 #include "irrgamePlayer.h"
 
 #include "stub/video/Null/CNullDriver.h"
+#include "SUserClipPlane.h"
+#include "video/ETransformationState.h"
+#include "video/materials/SMaterial.h"
+#include "ERenderMode.h"
+
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <OpenGL/glext.h>
+#include <GLUT/glut.h>
 
 namespace irrgame
 {
@@ -53,6 +62,39 @@ namespace irrgame
 				 rendering.
 				 */
 				virtual void endScene();
+
+			private:
+				void clearBuffers(bool backBuffer, bool zBuffer,
+						bool stencilBuffer, SColor color);
+				bool genericDriverInit();
+				//! Sets transformation matrices.
+				/** \param state Transformation type to be set, e.g. view,
+				 world, or projection.
+				 \param mat Matrix describing the transformation. */
+				void setTransform(ETransformationState state,
+						const matrix4& mat);
+				//! sets the needed renderstates
+				void setRenderStates3DMode();
+
+				//! creates a transposed matrix in supplied GLfloat array to pass to OpenGL
+				inline void createGLMatrix(GLfloat gl_matrix[16],
+						const matrix4& m);
+
+				//! apply prepared clip plane
+				void uploadClipPlane(u32 index);
+
+			private:
+				core::array<SUserClipPlane> UserClipPlanes;
+
+				//! bool to make all renderstates reset if set to true.
+				bool ResetRenderStates;
+				ERenderMode CurrentRenderMode;
+				matrix4 Matrices[ETS_COUNT];
+				bool Transformation3DChanged;
+
+				SMaterial Material;
+				SMaterial LastMaterial;
+
 		};
 	} /* namespace video */
 } /* namespace irrgame */
