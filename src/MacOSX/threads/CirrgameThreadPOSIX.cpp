@@ -11,6 +11,7 @@
 #include "pthread.h"
 #include "signal.h"
 #include "sched.h"
+
 namespace irrgame
 {
 	namespace threads
@@ -45,7 +46,7 @@ namespace irrgame
 		//@ param2 - input parameter
 		CirrgameThreadPOSIX::CirrgameThreadPOSIX(
 				delegateThreadCallback* callback, void* callbackArg,
-				EThreadPriority prior, stringc name) :
+				EThreadPriority prior, core::stringc name) :
 				Priority(prior), Handle(0)
 		{
 #ifdef DEBUG
@@ -145,7 +146,7 @@ namespace irrgame
 
 		//! irrgameThread creator. Internal function. Please do not use.
 		irrgameThread* createIrrgameThread(delegateThreadCallback* callback,
-				void* callbackArg, EThreadPriority prior, stringc name)
+				void* callbackArg, EThreadPriority prior, core::stringc name)
 		{
 			return new CirrgameThreadPOSIX(callback, callbackArg, prior, name);
 		}

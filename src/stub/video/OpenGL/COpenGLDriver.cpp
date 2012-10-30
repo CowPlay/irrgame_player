@@ -8,6 +8,7 @@
 #include "COpenGLDriver.h"
 #include "COpenGLExtensionHandler.h"
 #include "video/ITexture.h"
+#include "video/color/SColorf.h"
 
 namespace irrgame
 {
@@ -22,21 +23,29 @@ namespace irrgame
 
 		bool COpenGLDriver::genericDriverInit()
 		{
+
+			//TODO: refactor it, make it depended from window size
 			dimension2du screenSize(100, 100);
+
+			//TODO: read it from config
 			bool stencilBuffer = false;
 
-//			u32 i;
-//			for (i = 0; i < MATERIAL_MAX_TEXTURES; ++i)
+			//FIXME
+			//for (s32 i = 0; i < MaterialMaxTextures; ++i)
 //				CurrentTexture[i] = 0;
 //			// load extensions
 
-			COpenGLExtensionHandler::getInstance().initExtensions(false); // false to init stencil buffer extension
+			//
+			COpenGLExtensionHandler::getInstance().initExtensions(
+					stencilBuffer);
 
+			// Setting the bit-packing style for row of pixels (memory alignment)
 			glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
 			// Reset The Current Viewport
 			glViewport(0, 0, screenSize.Width, screenSize.Height);
 
+			// Setup 3D clipping planes for reducing objects calculation
 			UserClipPlanes.reallocate(
 					COpenGLExtensionHandler::getInstance().MaxUserClipPlanes);
 			for (s32 i = 0;
@@ -46,11 +55,11 @@ namespace irrgame
 				UserClipPlanes.pushBack(SUserClipPlane());
 			}
 
+			// Reset every transform matrixes for each context
 			for (s32 i = 0; i < ETS_COUNT; ++i)
 			{
-				//TODO: make it static to prevent duplicates creation
-				matrix4 identity;
-				setTransform(static_cast<ETransformationState>(i), identity);
+				setTransform(static_cast<ETransformationState>(i),
+						matrix4f::getIdentityMatrix());
 			}
 
 			//TODO: implement it
@@ -62,17 +71,28 @@ namespace irrgame
 //				glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,
 //						GL_SEPARATE_SPECULAR_COLOR);
 //#endif
+			// Light model calculations method for current view context
+			// 0 - fastest
+			// 1 - quality
 			glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
 
 			// This is a fast replacement for NORMALIZE_NORMALS
 			// if ((Version>101) || FeatureAvailable[IRR_EXT_rescale_normal])
 			//  glEnable(GL_RESCALE_NORMAL_EXT);
 
+			// Value what will fill depth buffer at glClear function
 			glClearDepth(1.0);
+
+			// Configure interpolation quality
 			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 			glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 			glHint(GL_POINT_SMOOTH_HINT, GL_FASTEST);
+
+			// Choose z-buffer method checking
+			// GL_LEWQUAL - pass object if z <= cameras z
 			glDepthFunc(GL_LEQUAL);
+
+			// Choose edge faces render mode (clock-wise, classical)
 			glFrontFace(GL_CW);
 
 			// adjust flat coloring scheme to DirectX verssion
@@ -85,11 +105,12 @@ namespace irrgame
 			// create material renderers
 
 			//TODO: implement it
-			//createMaterialRenderers();
+//			createMaterialRenderers();
 
 			// set the renderstates
 			setRenderStates3DMode();
 
+			// Alpha checking function (if alpha exist)
 			glAlphaFunc(GL_GREATER, 0.f);
 
 			// set fog mode
@@ -107,6 +128,123 @@ namespace irrgame
 			ResetRenderStates = true;
 
 			return true;
+		}
+
+//		void COpenGLDriver::createMaterialRenderers()
+//		{
+//			// create OpenGL material renderers
+//
+//			addAndDropMaterialRenderer(new COpenGLMaterialRenderer_SOLID(this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_SOLID_2_LAYER(this));
+//
+//			// add the same renderer for all lightmap types
+//			COpenGLMaterialRenderer_LIGHTMAP* lmr =
+//					new COpenGLMaterialRenderer_LIGHTMAP(this);
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP:
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP_ADD:
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP_M2:
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP_M4:
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP_LIGHTING:
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP_LIGHTING_M2:
+//			addMaterialRenderer(lmr); // for EMT_LIGHTMAP_LIGHTING_M4:
+//			lmr->drop();
+//
+//			// add remaining material renderer
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_DETAIL_MAP(this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_SPHERE_MAP(this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_REFLECTION_2_LAYER(this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_TRANSPARENT_ADD_COLOR(this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_TRANSPARENT_ALPHA_CHANNEL(
+//							this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_TRANSPARENT_ALPHA_CHANNEL_REF(
+//							this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_TRANSPARENT_VERTEX_ALPHA(this));
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_TRANSPARENT_REFLECTION_2_LAYER(
+//							this));
+//
+//			// add normal map renderers
+//			s32 tmp = 0;
+//			video::IMaterialRenderer* renderer = 0;
+//			renderer = new COpenGLNormalMapRenderer(this, tmp,
+//					MaterialRenderers[EMT_SOLID].Renderer);
+//			renderer->drop();
+//			renderer = new COpenGLNormalMapRenderer(this, tmp,
+//					MaterialRenderers[EMT_TRANSPARENT_ADD_COLOR].Renderer);
+//			renderer->drop();
+//			renderer = new COpenGLNormalMapRenderer(this, tmp,
+//					MaterialRenderers[EMT_TRANSPARENT_VERTEX_ALPHA].Renderer);
+//			renderer->drop();
+//
+//			// add parallax map renderers
+//			renderer = new COpenGLParallaxMapRenderer(this, tmp,
+//					MaterialRenderers[EMT_SOLID].Renderer);
+//			renderer->drop();
+//			renderer = new COpenGLParallaxMapRenderer(this, tmp,
+//					MaterialRenderers[EMT_TRANSPARENT_ADD_COLOR].Renderer);
+//			renderer->drop();
+//			renderer = new COpenGLParallaxMapRenderer(this, tmp,
+//					MaterialRenderers[EMT_TRANSPARENT_VERTEX_ALPHA].Renderer);
+//			renderer->drop();
+//
+//			// add basic 1 texture blending
+//			addAndDropMaterialRenderer(
+//					new COpenGLMaterialRenderer_ONETEXTURE_BLEND(this));
+//		}
+
+		//! Sets the fog mode.
+		//TODO: make struct for fog
+		void COpenGLDriver::setFog(SColor c, EFogType fogType, f32 start,
+				f32 end, f32 density, bool pixelFog, bool rangeFog)
+		{
+			CNullDriver::setFog(c, fogType, start, end, density, pixelFog,
+					rangeFog);
+
+			// Fog type
+			// Calculates force of fog depending from range by this formula
+			glFogf(GL_FOG_MODE,
+					GLfloat(
+							(fogType == EFT_FOG_LINEAR) ? GL_LINEAR :
+							(fogType == EFT_FOG_EXP) ? GL_EXP : GL_EXP2));
+
+			if (IOpenGLExtensionHandler::getInstance().isOpenGLFeatureAvailable(IRR_EXT_fog_coord))
+			{
+				glFogi(GL_FOG_COORDINATE_SOURCE, GL_FRAGMENT_DEPTH);
+			}
+
+			if (fogType == EFT_FOG_LINEAR)
+			{
+				glFogf(GL_FOG_START, start);
+				glFogf(GL_FOG_END, end);
+			}
+			else
+			{
+				glFogf(GL_FOG_DENSITY, density);
+			}
+
+			if (pixelFog)
+			{
+				glHint(GL_FOG_HINT, GL_NICEST);
+			}
+			else
+			{
+				glHint(GL_FOG_HINT, GL_FASTEST);
+			}
+
+			SColorf color(c);
+			GLfloat data[4] =
+			{ color.r, color.g, color.b, color.a };
+
+			// Setting for color
+			glFogfv(GL_FOG_COLOR, data);
 		}
 
 		//! sets the needed renderstates
@@ -161,14 +299,14 @@ namespace irrgame
 
 		//! creates a matrix in supplied GLfloat array to pass to OpenGL
 		inline void COpenGLDriver::createGLMatrix(GLfloat gl_matrix[16],
-				const matrix4& m)
+				const matrix4f& m)
 		{
 			memcpy(gl_matrix, m.pointer(), 16 * sizeof(f32));
 		}
 
 		//! sets transformation
 		void COpenGLDriver::setTransform(ETransformationState state,
-				const matrix4& mat)
+				const matrix4f& mat)
 		{
 			Matrices[state] = mat;
 			Transformation3DChanged = true;

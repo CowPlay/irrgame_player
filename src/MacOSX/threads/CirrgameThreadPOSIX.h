@@ -10,6 +10,8 @@
 
 #include "threads/irrgameThread.h"
 #include "pthread.h"
+#include "core/collections/irrstring.h"
+
 namespace irrgame
 {
 	namespace threads
@@ -26,7 +28,7 @@ namespace irrgame
 				//@ param2 - input parameter
 				CirrgameThreadPOSIX(delegateThreadCallback* callback,
 						void* callbackArg = NULL, EThreadPriority prior =
-								ETP_NORMAL, stringc name = "");
+								ETP_NORMAL, core::stringc name = "");
 
 				//! Destructor
 				virtual ~CirrgameThreadPOSIX();

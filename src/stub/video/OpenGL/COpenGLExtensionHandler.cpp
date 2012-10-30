@@ -21,17 +21,6 @@ namespace irrgame
 		COpenGLExtensionHandler::COpenGLExtensionHandler() :
 				IOpenGLExtensionHandler()
 		{
-			for (u32 i = 0; i < IRR_OpenGL_Feature_Count; ++i)
-				FeatureAvailable[i] = false;
-
-			DimAliasedLine[0] = 1.f;
-			DimAliasedLine[1] = 1.f;
-			DimAliasedPoint[0] = 1.f;
-			DimAliasedPoint[1] = 1.f;
-			DimSmoothedLine[0] = 1.f;
-			DimSmoothedLine[1] = 1.f;
-			DimSmoothedPoint[0] = 1.f;
-			DimSmoothedPoint[1] = 1.f;
 		}
 
 		void COpenGLExtensionHandler::dump() const
@@ -43,6 +32,8 @@ namespace irrgame
 				//os::Printer::log(OpenGLFeatureStrings[i], FeatureAvailable[i] ? " true" : " false");
 			}
 		}
+
+
 
 		void COpenGLExtensionHandler::initExtensions(bool stencilBuffer)
 		{

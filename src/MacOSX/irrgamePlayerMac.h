@@ -40,7 +40,12 @@ namespace irrgame
 
 		private:
 
+			//! Internal macosx application launching
+			void applicationLaunching();
+
+			//! Will create macosx cocoa window (not x11)
 			void createWindow();
+
 
 		private:
 			//pointer to window

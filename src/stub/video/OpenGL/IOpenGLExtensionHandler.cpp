@@ -21,6 +21,17 @@ namespace irrgame
 						0), MaxTextureLODBias(0.f), Version(0), ShaderLanguageVersion(
 						0)
 		{
+			for (u32 i = 0; i < IRR_OpenGL_Feature_Count; ++i)
+				FeatureAvailable[i] = false;
+
+			DimAliasedLine[0] = 1.f;
+			DimAliasedLine[1] = 1.f;
+			DimAliasedPoint[0] = 1.f;
+			DimAliasedPoint[1] = 1.f;
+			DimSmoothedLine[0] = 1.f;
+			DimSmoothedLine[1] = 1.f;
+			DimSmoothedPoint[0] = 1.f;
+			DimSmoothedPoint[1] = 1.f;
 		}
 
 		//! Destructor

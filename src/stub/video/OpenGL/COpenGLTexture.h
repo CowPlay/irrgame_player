@@ -9,6 +9,7 @@
 #define COPENGLTEXTURE_H_
 
 #include "video/ITexture.h"
+#include "core/collections/irrstring.h"
 
 namespace irrgame
 {
@@ -19,7 +20,7 @@ namespace irrgame
 		{
 			public:
 				//! Default constructor
-				COpenGLTexture(const stringc& path);
+				COpenGLTexture(const core::stringc& path);
 
 				//! Destructor
 				virtual ~COpenGLTexture();

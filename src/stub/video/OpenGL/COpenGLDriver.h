@@ -17,7 +17,7 @@
 #include "stub/video/Null/CNullDriver.h"
 #include "SUserClipPlane.h"
 #include "video/ETransformationState.h"
-#include "video/materials/SMaterial.h"
+#include "video/material/SMaterial.h"
 #include "ERenderMode.h"
 
 #include <OpenGL/gl.h>
@@ -63,6 +63,29 @@ namespace irrgame
 				 */
 				virtual void endScene();
 
+				//TODO: make struct for fog
+				//! Sets the fog mode.
+				/** These are global values attached to each 3d object rendered,
+				 which has the fog flag enabled in its material.
+				 \param color Color of the fog
+				 \param fogType Type of fog used
+				 \param start Only used in linear fog mode (linearFog=true).
+				 Specifies where fog starts.
+				 \param end Only used in linear fog mode (linearFog=true).
+				 Specifies where fog ends.
+				 \param density Only used in exponential fog mode
+				 (linearFog=false). Must be a value between 0 and 1.
+				 \param pixelFog Set this to false for vertex fog, and true if
+				 you want per-pixel fog.
+				 \param rangeFog Set this to true to enable range-based vertex
+				 fog. The distance from the viewer is used to compute the fog,
+				 not the z-coordinate. This is better, but slower. This might not
+				 be available with all drivers and fog settings. */
+				virtual void setFog(SColor color = SColor(0, 255, 255, 255),
+						EFogType fogType = EFT_FOG_LINEAR, f32 start = 50.0f,
+						f32 end = 100.0f, f32 density = 0.01f, bool pixelFog =
+								false, bool rangeFog = false);
+
 			private:
 				void clearBuffers(bool backBuffer, bool zBuffer,
 						bool stencilBuffer, SColor color);
@@ -72,13 +95,13 @@ namespace irrgame
 				 world, or projection.
 				 \param mat Matrix describing the transformation. */
 				void setTransform(ETransformationState state,
-						const matrix4& mat);
+						const matrix4f& mat);
 				//! sets the needed renderstates
 				void setRenderStates3DMode();
 
 				//! creates a transposed matrix in supplied GLfloat array to pass to OpenGL
 				inline void createGLMatrix(GLfloat gl_matrix[16],
-						const matrix4& m);
+						const matrix4f& m);
 
 				//! apply prepared clip plane
 				void uploadClipPlane(u32 index);
@@ -89,7 +112,7 @@ namespace irrgame
 				//! bool to make all renderstates reset if set to true.
 				bool ResetRenderStates;
 				ERenderMode CurrentRenderMode;
-				matrix4 Matrices[ETS_COUNT];
+				matrix4f Matrices[ETS_COUNT];
 				bool Transformation3DChanged;
 
 				SMaterial Material;

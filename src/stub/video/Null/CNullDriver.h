@@ -4,9 +4,10 @@
 
 #ifndef __C_VIDEO_NULL_H_INCLUDED__
 #define __C_VIDEO_NULL_H_INCLUDED__
-//
+
 #include "video/IVideoDriver.h"
-//#include "IFileSystem.h"
+#include "core/collections/array.h"
+
 //#include "IImagePresenter.h"
 //#include "IGPUProgrammingServices.h"
 //#include "irrArray.h"
@@ -69,6 +70,53 @@ namespace irrgame
 
 				//! Returns FPS counter.
 				virtual IFPSCounter* getFPSCounter() const;
+
+				//TODO: make struct for fog
+				//! Sets the fog mode.
+				/** These are global values attached to each 3d object rendered,
+				 which has the fog flag enabled in its material.
+				 \param color Color of the fog
+				 \param fogType Type of fog used
+				 \param start Only used in linear fog mode (linearFog=true).
+				 Specifies where fog starts.
+				 \param end Only used in linear fog mode (linearFog=true).
+				 Specifies where fog ends.
+				 \param density Only used in exponential fog mode
+				 (linearFog=false). Must be a value between 0 and 1.
+				 \param pixelFog Set this to false for vertex fog, and true if
+				 you want per-pixel fog.
+				 \param rangeFog Set this to true to enable range-based vertex
+				 fog. The distance from the viewer is used to compute the fog,
+				 not the z-coordinate. This is better, but slower. This might not
+				 be available with all drivers and fog settings. */
+				virtual void setFog(SColor color = SColor(0, 255, 255, 255),
+						EFogType fogType = EFT_FOG_LINEAR, f32 start = 50.0f,
+						f32 end = 100.0f, f32 density = 0.01f, bool pixelFog =
+								false, bool rangeFog = false);
+
+				//! Adds a new material renderer to the video device.
+				/** Use this method to extend the VideoDriver with new material
+				 types. To extend the engine using this method do the following:
+				 Derive a class from IMaterialRenderer and override the methods
+				 you need. For setting the right renderstates, you can try to
+				 get a pointer to the real rendering device using
+				 IVideoDriver::getExposedVideoData(). Add your class with
+				 IVideoDriver::addMaterialRenderer(). To use an object being
+				 displayed with your new material, set the MaterialType member of
+				 the SMaterial struct to the value returned by this method.
+				 If you simply want to create a new material using vertex and/or
+				 pixel shaders it would be easier to use the
+				 video::IGPUProgrammingServices interface which you can get
+				 using the getGPUProgrammingServices() method.
+				 \param renderer A pointer to the new renderer.
+				 \return The number of the material type which can be set in
+				 SMaterial::MaterialType to use the renderer. -1 is returned if
+				 an error occured. For example if you tried to add an material
+				 renderer to the software renderer or the null device, which do
+				 not accept material renderers. */
+				virtual s32 addMaterialRenderer(IMaterialRenderer* renderer);
+
+			protected:
 
 //		//! Disable a feature of the driver.
 //		virtual void disableFeature(E_VIDEO_DRIVER_FEATURE feature, bool flag=true);
@@ -237,10 +285,6 @@ namespace irrgame
 //		virtual void draw2DPolygon(core::position2d<s32> center,
 //			f32 radius, video::SColor Color, s32 vertexCount);
 //
-//		virtual void setFog(SColor color=SColor(0,255,255,255),
-//				E_FOG_TYPE fogType=EFT_FOG_LINEAR,
-//				f32 start=50.0f, f32 end=100.0f, f32 density=0.01f,
-//				bool pixelFog=false, bool rangeFog=false);
 //
 //		virtual void getFog(SColor& color, E_FOG_TYPE& fogType,
 //				f32& start, f32& end, f32& density,
@@ -439,9 +483,7 @@ namespace irrgame
 //		/** Used to notify the driver that the window was resized. */
 //		virtual void OnResize(const core::dimension2d<u32>& size);
 //
-//		//! Adds a new material renderer to the video device.
-//		virtual s32 addMaterialRenderer(IMaterialRenderer* renderer,
-//				const char* name = 0);
+//
 //
 //		//! Returns driver and operating system specific data about the IVideoDriver.
 //		virtual const SExposedVideoData& getExposedVideoData();
@@ -637,8 +679,7 @@ namespace irrgame
 //		//! checks triangle count and print warning if wrong
 //		bool checkPrimitiveCount(u32 prmcnt) const;
 //
-//		// adds a material renderer and drops it afterwards. To be used for internal creation
-//		s32 addAndDropMaterialRenderer(IMaterialRenderer* m);
+
 //
 //		//! deletes all material renderers
 //		void deleteMaterialRenders();
@@ -673,12 +714,6 @@ namespace irrgame
 //			}
 //		};
 //
-//		struct SMaterialRenderer
-//		{
-//			core::stringc Name;
-//			IMaterialRenderer* Renderer;
-//		};
-//
 //		struct SDummyTexture : public ITexture
 //		{
 //			SDummyTexture(const io::path& name) : ITexture(name), size(0,0) {};
@@ -698,11 +733,14 @@ namespace irrgame
 				IFPSCounter* FPSCounter;
 				irrgamePlayer* Player;
 
+				//list of all material renderers
+				core::array<IMaterialRenderer*> MaterialRenderers;
+
 //		core::array<SSurface> Textures;
 //		core::array<video::IImageLoader*> SurfaceLoader;
 //		core::array<video::IImageWriter*> SurfaceWriter;
 //		core::array<SLight> Lights;
-//		core::array<SMaterialRenderer> MaterialRenderers;
+//
 //
 //		//core::array<SHWBufferLink*> HWBufferLinks;
 //		core::map< const scene::IMeshBuffer* , SHWBufferLink* > HWBufferMap;
@@ -723,10 +761,15 @@ namespace irrgame
 //
 //		u32 TextureCreationFlags;
 //
-//		f32 FogStart;
-//		f32 FogEnd;
-//		f32 FogDensity;
-//		SColor FogColor;
+				f32 FogStart;
+				f32 FogEnd;
+				f32 FogDensity;
+				SColor FogColor;
+
+				EFogType FogType;
+				bool PixelFog;
+				bool RangeFog;
+
 //		SExposedVideoData ExposedData;
 //
 //		SOverrideMaterial OverrideMaterial;
@@ -734,9 +777,6 @@ namespace irrgame
 //		SMaterial InitMaterial2D;
 //		bool OverrideMaterial2DEnabled;
 //
-//		E_FOG_TYPE FogType;
-//		bool PixelFog;
-//		bool RangeFog;
 //		bool AllowZWriteOnTransparent;
 //
 //		bool FeatureEnabled[video::EVDF_COUNT];

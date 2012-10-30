@@ -215,8 +215,32 @@ namespace irrgame
 			return FPSCounter;
 		}
 
-//
-//
+		//! Sets the fog mode.
+		void CNullDriver::setFog(SColor color, EFogType fogType, f32 start,
+				f32 end, f32 density, bool pixelFog, bool rangeFog)
+		{
+			FogColor = color;
+			FogType = fogType;
+			FogStart = start;
+			FogEnd = end;
+			FogDensity = density;
+			PixelFog = pixelFog;
+			RangeFog = rangeFog;
+		}
+
+		//! Adds a new material renderer to the video device.
+		/*
+		s32 CNullDriver::addMaterialRenderer(IMaterialRenderer* renderer,
+				const char* name)
+		{
+			IRR_ASSERT(renderer);
+
+			MaterialRenderers.push_back(renderer);
+			renderer->grab();
+
+			return MaterialRenderers.size() - 1;
+		}*/
+
 ////! Adds an external surface loader to the engine.
 //void CNullDriver::addExternalImageLoader(IImageLoader* loader)
 //{
@@ -1437,18 +1461,7 @@ namespace irrgame
 //}
 //
 //
-////! Sets the fog mode.
-//void CNullDriver::setFog(SColor color, E_FOG_TYPE fogType, f32 start, f32 end,
-//		f32 density, bool pixelFog, bool rangeFog)
-//{
-//	FogColor = color;
-//	FogType = fogType;
-//	FogStart = start;
-//	FogEnd = end;
-//	FogDensity = density;
-//	PixelFog = pixelFog;
-//	RangeFog = rangeFog;
-//}
+
 //
 ////! Gets the fog mode.
 //void CNullDriver::getFog(SColor& color, E_FOG_TYPE& fogType, f32& start, f32& end,
@@ -1565,41 +1578,10 @@ namespace irrgame
 //}
 //
 //
-//// adds a material renderer and drops it afterwards. To be used for internal creation
-//s32 CNullDriver::addAndDropMaterialRenderer(IMaterialRenderer* m)
-//{
-//	s32 i = addMaterialRenderer(m);
-//
-//	if (m)
-//		m->drop();
-//
-//	return i;
-//}
+
 //
 //
-////! Adds a new material renderer to the video device.
-//s32 CNullDriver::addMaterialRenderer(IMaterialRenderer* renderer, const char* name)
-//{
-//	if (!renderer)
-//		return -1;
-//
-//	SMaterialRenderer r;
-//	r.Renderer = renderer;
-//	r.Name = name;
-//
-//	if (name == 0 && (MaterialRenderers.size() < (sizeof(sBuiltInMaterialTypeNames) / sizeof(char*))-1 ))
-//	{
-//		// set name of built in renderer so that we don't have to implement name
-//		// setting in all available renderers.
-//		r.Name = sBuiltInMaterialTypeNames[MaterialRenderers.size()];
-//	}
-//
-//	MaterialRenderers.push_back(r);
-//	renderer->grab();
-//
-//	return MaterialRenderers.size()-1;
-//}
-//
+
 //
 ////! Sets the name of a material renderer.
 //void CNullDriver::setMaterialRendererName(s32 idx, const char* name)

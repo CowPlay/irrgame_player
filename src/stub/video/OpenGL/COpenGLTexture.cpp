@@ -13,7 +13,7 @@ namespace irrgame
 	{
 
 		//! Default constructor
-		COpenGLTexture::COpenGLTexture(const stringc& path) :
+		COpenGLTexture::COpenGLTexture(const core::stringc& path) :
 				ITexture(path)
 		{
 			// TODO Auto-generated constructor stub

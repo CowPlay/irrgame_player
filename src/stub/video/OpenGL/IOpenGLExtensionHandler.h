@@ -46,7 +46,7 @@ namespace irrgame
 						EVideoDriverFeatures feature) const = 0;
 
 				//! queries the features of the driver, returns true if feature is available
-				virtual bool queryOpenGLFeature(
+				virtual bool isOpenGLFeatureAvailable(
 						EOpenGLFeatures feature) const = 0;
 
 				//! show all features with availablity
@@ -95,8 +95,6 @@ namespace irrgame
 				u16 Version;
 				//! GLSL version as Integer: 100*Major+Minor
 				u16 ShaderLanguageVersion;
-
-			protected:
 
 			protected:
 				// the global feature array

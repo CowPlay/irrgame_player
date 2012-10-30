@@ -15,6 +15,7 @@
 #include "events/user/EUserKeys.h"
 #include "events/user/IUserEvent.h"
 
+// Define helpers for cocoa objc calls
 #define SELECTOR(__x__) (sel_registerName(__x__))
 #define CLASS(__x__) (objc_getClass(__x__))
 #define SEND_OBJC_MESSAGE(__object__, __message__) (objc_msgSend(__object__, SELECTOR(__message__)))
@@ -22,43 +23,23 @@
 
 //Need for handle events
 extern CFStringRef NSDefaultRunLoopMode;
+struct CGRect;
+extern CGRect CGRectMake(s32 x, s32 y, s32 w, s32 h);
 
 namespace irrgame
 {
-
 	//! Default consructor
 	irrgamePlayerMac::irrgamePlayerMac() :
 			CGLContext(0), IsActive(true)
 	{
+
 #ifdef DEBUG
 		setDebugName("CIrrDeviceMacOSX");
 #endif
 
-		SEND_OBJC_MESSAGE(
-				SEND_OBJC_MESSAGE(CLASS("NSAutoreleasePool"), "alloc"), "init");
-		SEND_OBJC_MESSAGE(CLASS("NSApplication"), "sharedApplication");
-		id delegate =
-				SEND_OBJC_MESSAGE_WITH_OBJECT((SEND_OBJC_MESSAGE(CLASS("AppDelegate"), "alloc")), "initWithDevice:", this);
+		applicationLaunching();
 
-		SEND_OBJC_MESSAGE(
-				SEND_OBJC_MESSAGE_WITH_OBJECT((CLASS("NSApp")), "setDelegate:", delegate),
-				"autorelease");
-
-		/*
-		objc_msgSend((CLASS("NSBundle")), SELECTOR("loadNibNamed:owner:"),
-				(CFSTR("MainMenu") ),
-				(SEND_OBJC_MESSAGE(CLASS("NSApp"), "delegate")));
-		 */
-
-		SEND_OBJC_MESSAGE(CLASS("NSApp"), "finishLaunching");
-
-		id path =
-				SEND_OBJC_MESSAGE(SEND_OBJC_MESSAGE(SEND_OBJC_MESSAGE(CLASS("NSBundle"), "mainBundle"), "bundlePath"), "stringByDeletingLastPathComponent");
-
-		chdir(
-				(const char*) SEND_OBJC_MESSAGE(path, "fileSystemRepresentation"));
-		SEND_OBJC_MESSAGE(path, "release");
-
+		//TODO: create COSOperatior to get hardware information
 		//		Operator = new COSOperator(name.version);
 
 		createWindow();
@@ -76,23 +57,72 @@ namespace irrgame
 	{
 	}
 
+	//! Internal macosx application launching
+	void irrgamePlayerMac::applicationLaunching()
+	{
+		// Creating objc autorelease pool to prevent leaking
+		SEND_OBJC_MESSAGE(
+				SEND_OBJC_MESSAGE(CLASS("NSAutoreleasePool"), "alloc"), "init");
+
+		// Getting (and initialization) of current application
+		SEND_OBJC_MESSAGE(CLASS("NSApplication"), "sharedApplication");
+
+		// Initing the control delegate to bind internal app
+		//TODO: make real delegate (port the AppDelegate.mm) for event handeling
+		id delegate =
+				SEND_OBJC_MESSAGE_WITH_OBJECT((SEND_OBJC_MESSAGE(CLASS("AppDelegate"), "alloc")), "initWithDevice:", this);
+
+		// Binding of delegate to app
+		SEND_OBJC_MESSAGE(
+				SEND_OBJC_MESSAGE_WITH_OBJECT((CLASS("NSApp")), "setDelegate:", delegate),
+				"autorelease");
+
+		// We dont need the bundle because we compiling app without XCode internals
+//		 objc_msgSend((CLASS("NSBundle")), SELECTOR("loadNibNamed:owner:"), (CFSTR("MainMenu") ), (SEND_OBJC_MESSAGE(CLASS("NSApp"), "delegate")));
+
+		// Signal to application to mark application ready to work
+		SEND_OBJC_MESSAGE(CLASS("NSApp"), "finishLaunching");
+
+		// Set current work directory (for linux/win32 resources style)
+		id path =
+				SEND_OBJC_MESSAGE(SEND_OBJC_MESSAGE(SEND_OBJC_MESSAGE(CLASS("NSBundle"), "mainBundle"), "bundlePath"), "stringByDeletingLastPathComponent");
+		chdir(
+				(const char*) SEND_OBJC_MESSAGE(path, "fileSystemRepresentation"));
+
+		// delete path
+		SEND_OBJC_MESSAGE(path, "release");
+	}
+
 	void irrgamePlayerMac::flush()
 	{
 		if (CGLContext != NULL)
 		{
+			// Start batched instructions (low-end)
 			glFinish();
+
+			//TODO: check the glFlush or CGLFlush to prevent functional duplicates
+			// Request to done queue of batched instructions (high-end)
 			CGLFlushDrawable(CGLContext);
 		}
 	}
 
+	//! Will create macosx cocoa window (not x11)
 	void irrgamePlayerMac::createWindow()
 	{
+		// Alpha channel can have lot a more than 8bit, but typical PC can't support alpha more than 8bit
 		s32 alphaSize = 8;
-		s32 depthSize = 16;
-		s32 bits = 32; // video mode 24 bit + 8 alpha
 
+		// Depth size can be increased to 24/32 bits (if we want a very great complex persition) but 16bit it's okay
+		// can be 0 for 2D games (paint composition method)
+		s32 depthSize = 16;
+
+		// RGB = 24bit (8bit per color) + 8bit for alpha
+		s32 bits = 24 + alphaSize;
+
+		//TODO: refactor it to check available resolutions on current device
 		//		VideoModeList.setDesktop(CreationParams.Bits, core::dimension2d<u32>(ScreenWidth, ScreenHeight));
 
+		// ported cocoa enum to configure window style
 		enum
 		{
 			NSBorderlessWindowMask = 0,
@@ -102,8 +132,10 @@ namespace irrgame
 			NSResizableWindowMask = 1 << 3
 		};
 
+		// Making the default window
 		CGRect rect = CGRectMake(0, 0, 800, 600);
 
+		// Create cocoa window and configure it for special style
 		Window = objc_msgSend(SEND_OBJC_MESSAGE(CLASS("NSWindow"), "alloc"),
 				SELECTOR("initWithContentRect:styleMask:backing:defer:"), rect,
 				NSTitledWindowMask + NSClosableWindowMask
@@ -111,6 +143,7 @@ namespace irrgame
 
 		IRR_ASSERT(Window);
 
+		// Required attributes for window creating
 		s32 windowattribs[] =
 		{ 72,	//NSOpenGLPFANoRecovery. Disable all failure recovery systems
 				73, //NSOpenGLPFAAccelerated. Choose a hardware accelerated renderer
@@ -182,6 +215,7 @@ namespace irrgame
 
 		IRR_ASSERT(format);
 
+		// Creating macos platform depended opengl context (container for CGLContext what can be placed on cocoa view)
 		OGLContext = objc_msgSend(
 				SEND_OBJC_MESSAGE(CLASS("NSOpenGLContext"), "alloc"),
 				SELECTOR("initWithFormat:shareContext:"), format, NULL);
@@ -190,26 +224,37 @@ namespace irrgame
 
 		IRR_ASSERT(OGLContext);
 
+		// Centrate window on display
 		SEND_OBJC_MESSAGE(Window, "center");
 
+		// Apply application delegate (AppDelegate) for window here
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "setDelegate:",
 				SEND_OBJC_MESSAGE(CLASS("NSApp"), "delegate"));
 
+		// Getting root view, what can handle OGLContext view
 		id contentView = SEND_OBJC_MESSAGE(Window, "contentView");
 
 		IRR_ASSERT(contentView);
 
+		// Bind the view and OGLContext
 		SEND_OBJC_MESSAGE_WITH_OBJECT(OGLContext, "setView:", contentView);
 
+		// Accept handeling mouse events
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "setAcceptsMouseMovedEvents:",
 				true);
 
+		// Show window
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "setIsVisible:", true);
 
+		// Make it upper than other windows
+		//TODO: fixit! Not working now
 		SEND_OBJC_MESSAGE_WITH_OBJECT(Window, "makeKeyAndOrderFront:", NULL);
 
-		CGLContext = (CGLContextObj) SEND_OBJC_MESSAGE(OGLContext, "CGLContextObj");
+		// Getting internal OpenGLContext
+		CGLContext =
+				(CGLContextObj) SEND_OBJC_MESSAGE(OGLContext, "CGLContextObj");
 
+		// Setting the internal OpenGLContext as default
 		CGLSetCurrentContext(CGLContext);
 
 		//GLint newSwapInterval = 1; // enable vsync
@@ -220,21 +265,24 @@ namespace irrgame
 	//! Handle user events in this func
 	bool irrgamePlayerMac::runInternal()
 	{
+		// Event handeling
+
+		// Check if application closed
 		bool result =
 				!((bool) SEND_OBJC_MESSAGE(SEND_OBJC_MESSAGE(CLASS("NSApp"), "delegate"), "isQuit"))
 						&& IsActive;
 
 		id event; //NSEvent *event;
 
-
 		//		storeMouseLocation();
 		//
+
+		// Getting next event
 		event = objc_msgSend(CLASS("NSApp"),
 				SELECTOR("nextEventMatchingMask:untilDate:inMode:dequeue:"),
 				(0xffffffffU),
 				SEND_OBJC_MESSAGE(CLASS("NSDate"), "distantPast"),
 				NSDefaultRunLoopMode, true);
-		//		event = [NSApp nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantPast] inMode:NSDefaultRunLoopMode dequeue:YES];
 
 		if (!event)
 		{
@@ -244,7 +292,9 @@ namespace irrgame
 		}
 		else
 		{
-//		bzero(&ievent,sizeof(ievent));
+			// Get type of event
+			// here is return type int actually, but id - default cocoa return signature, so we need to convert it to int for handeling
+			// ant the short way - get it as "int pointer" - can be withou errors/warnings and can be handled in switch
 			intptr_t eventType = (intptr_t) SEND_OBJC_MESSAGE(event, "type");
 
 			switch (eventType)
@@ -288,6 +338,7 @@ namespace irrgame
 
 } /* namespace irrgame */
 
+// Undefine internal definitions
 #undef SEND_OBJC_MESSAGE_WITH_OBJECT
 #undef SEND_OBJC_MESSAGE
 #undef CLASS

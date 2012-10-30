@@ -9,8 +9,6 @@
 
 #include "IOpenGLExtensionHandler.h"
 
-#include "OpenGLFeatureStrings.h"
-
 #include <OpenGL/gl.h>
 
 namespace irrgame
@@ -32,7 +30,7 @@ namespace irrgame
 				bool queryFeature(EVideoDriverFeatures feature) const;
 
 				//! queries the features of the driver, returns true if feature is available
-				bool queryOpenGLFeature(EOpenGLFeatures feature) const
+				bool isOpenGLFeatureAvailable(EOpenGLFeatures feature) const
 				{
 					return FeatureAvailable[feature];
 				}
