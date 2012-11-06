@@ -71,7 +71,7 @@ namespace irrgame
 //
 		//! Default constructor
 		CNullDriver::CNullDriver(irrgamePlayer* player) :
-				PrimitivesDrawn(0), FPSCounter(0), Player(player)
+				PrimitivesDrawn(0), FPSCounter(0), Player(player), Fog(0)
 		{
 #ifdef DEBUG
 			setDebugName("CNullDriver");
@@ -176,6 +176,9 @@ namespace irrgame
 			if (FPSCounter)
 				FPSCounter->drop();
 
+			if (Fog)
+				Fog->drop();
+
 //
 //	if (MeshManipulator)
 //		MeshManipulator->drop();
@@ -216,30 +219,65 @@ namespace irrgame
 		}
 
 		//! Sets the fog mode.
-		void CNullDriver::setFog(SColor color, EFogType fogType, f32 start,
-				f32 end, f32 density, bool pixelFog, bool rangeFog)
+		void CNullDriver::setFog(FogEntry* value)
 		{
-			FogColor = color;
-			FogType = fogType;
-			FogStart = start;
-			FogEnd = end;
-			FogDensity = density;
-			PixelFog = pixelFog;
-			RangeFog = rangeFog;
+			IRR_ASSERT(value);
+
+			if (Fog)
+			{
+				Fog->drop();
+			}
+
+			Fog = value;
+
+			Fog->grab();
 		}
 
 		//! Adds a new material renderer to the video device.
-		/*
-		s32 CNullDriver::addMaterialRenderer(IMaterialRenderer* renderer,
-				const char* name)
+		s32 CNullDriver::addMaterialRenderer(IMaterialRenderer* renderer)
 		{
 			IRR_ASSERT(renderer);
 
-			MaterialRenderers.push_back(renderer);
+			MaterialRenderers.pushBack(renderer);
 			renderer->grab();
 
 			return MaterialRenderers.size() - 1;
-		}*/
+		}
+
+		//! returns screen size
+		const dimension2du& CNullDriver::getScreenSize() const
+		{
+			return ScreenSize;
+		}
+
+		//! returns the current render target size,
+		//! or the screen size if render targets are not implemented
+		const dimension2du& CNullDriver::getCurrentRenderTargetSize() const
+		{
+			return ScreenSize;
+		}
+
+		//! sets a render target
+		bool CNullDriver::setRenderTarget(ITexture* texture,
+				bool clearBackBuffer, bool clearZBuffer, SColor color)
+		{
+			return false;
+		}
+
+		//! Draws a pixel
+		void CNullDriver::drawPixel(u32 x, u32 y, const SColor & color)
+		{
+		}
+
+		//! Draws a 2d image, using a color (if color is other then Color(255,255,255,255)) and the alpha channel of the texture if wanted.
+		void CNullDriver::draw2DImage(const video::ITexture* texture,
+				const vector2di& destPos, const recti& sourceRect,
+				const recti* clipRect,
+				SColor color,
+				bool useAlphaChannelOfTexture)
+		{
+
+		}
 
 ////! Adds an external surface loader to the engine.
 //void CNullDriver::addExternalImageLoader(IImageLoader* loader)

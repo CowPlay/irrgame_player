@@ -6,15 +6,18 @@
  */
 
 #include "irrgamePlayerStub.h"
-#include "events/engine/IEventScheduler.h"
-#include "video/IVideoDriver.h"
+#include "events/engine/SharedEventScheduler.h"
+#include "video/image/IImage.h"
+#include "video/color/EColorFormat.h"
+#include "MacOSX/video/OpenGL/COpenGLTexture.h"
+#include "io/SharedFileSystem.h"
 
 namespace irrgame
 {
 	//!Default constructor
 	irrgamePlayerStub::irrgamePlayerStub() :
-			ConfigReader(0), SceneManager(0), VideoDriver(0), VideoModeList(0), UserEventsHandler(0),
-			Timer(0)
+			ConfigReader(0), SceneManager(0), VideoDriver(0), VideoModeList(0), UserEventsHandler(
+					0), Timer(0)
 	{
 		ConfigReader = io::createPlayerConfigReader();
 
@@ -28,7 +31,7 @@ namespace irrgame
 		UserEventsHandler = events::createUserEventsHandler();
 
 		//create and run actions pool
-		events::IEventScheduler::getInstance().startProcess();
+		events::SharedEventScheduler::getInstance().startProcess();
 	}
 
 	//! Destructor
@@ -78,13 +81,13 @@ namespace irrgame
 
 		while (runInternal())
 		{
-
 			utils::ITimer::tick();
 
-			events::IEventScheduler::getInstance().proceedNextRealTimeEvent();
+			events::SharedEventScheduler::getInstance().proceedNextRealTimeEvent();
 
 			VideoDriver->beginScene();
 //scenemanager->drawAll();
+
 			VideoDriver->endScene();
 		}
 

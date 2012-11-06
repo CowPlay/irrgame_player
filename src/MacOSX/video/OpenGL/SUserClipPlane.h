@@ -17,14 +17,16 @@ namespace irrgame
 	{
 
 		struct SUserClipPlane
-
 		{
+			public:
 
+				//! Default constructor
 				SUserClipPlane() :
 						Enabled(false)
 				{
 				}
 
+			public:
 				plane3df Plane;
 				bool Enabled;
 		};

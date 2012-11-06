@@ -10,7 +10,7 @@
 
 #include "threads/irrgameThread.h"
 #include "pthread.h"
-#include "core/collections/irrstring.h"
+#include "core/collections/stringc.h"
 
 namespace irrgame
 {

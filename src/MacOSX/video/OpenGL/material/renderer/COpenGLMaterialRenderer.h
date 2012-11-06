@@ -9,7 +9,7 @@
 #define COPENGLMATERIALRENDERER_H_
 
 #include "video/material/IMaterialRenderer.h"
-#include "video/IVideoDriver.h"
+#include "video/driver/IVideoDriver.h"
 
 namespace irrgame
 {

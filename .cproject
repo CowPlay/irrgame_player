@@ -31,7 +31,7 @@
 									<listOptionValue builtIn="false" value="irrgame_sdk"/>
 									<listOptionValue builtIn="false" value="objc"/>
 								</option>
-								<option id="macosx.cpp.link.option.flags.754989762" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-framework corefoundation -framework opengl -framework glut -framework carbon" valueType="string"/>
+								<option id="macosx.cpp.link.option.flags.754989762" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-framework corefoundation -framework opengl -framework glut -framework carbon -framework openal" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.1420901538" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -65,7 +65,6 @@
 								<option id="gnu.c.compiler.macosx.exe.debug.option.debugging.level.499608208" name="Debug Level" superClass="gnu.c.compiler.macosx.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1602239171" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../irrgame_sdk/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../irrgame_sdk/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/src&quot;"/>
 								</option>

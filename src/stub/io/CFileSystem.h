@@ -5,7 +5,7 @@
 #ifndef __C_FILE_SYSTEM_H_INCLUDED__
 #define __C_FILE_SYSTEM_H_INCLUDED__
 
-#include "io/IFileSystem.h"
+#include "io/SharedFileSystem.h"
 
 #include "core/irrgamecollections.h"
 
@@ -21,16 +21,16 @@ namespace irrgame
 		/*!
 		 FileSystem which uses normal files and one zipfile
 		 */
-		class CFileSystem: public IFileSystem
-		{
-			public:
-
+//		class CFileSystem: public SharedFileSystem
+//		{
+//			public:
+//
 				//! Default constructor
 //				CFileSystem();
-
+//
 //! destructor
 //				virtual ~CFileSystem();
-
+//
 //				//! Adds an archive to the file system.
 //				virtual bool addFileArchive(const io::path& filename,
 //						bool ignoreCase = true, bool ignorePaths = true,
@@ -110,10 +110,10 @@ namespace irrgame
 ////				virtual IAttributes* createEmptyAttributes(
 ////						video::IVideoDriver* driver);
 //
-			private:
+//			private:
 //
-
-		};
+//
+//		};
 
 	} // end namespace irr
 } // end namespace io

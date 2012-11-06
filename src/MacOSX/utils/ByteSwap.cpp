@@ -1,16 +1,16 @@
 /*
  * CByteSwap.h
- * MacOSX realization of IByteSwap
+ * MacOSX realization of ByteSwap
  *
  *  Created on: Jul 31, 2012
  *      Author: gregorytkach
  */
 
-#include "./core/base/compileConfig.h"
+#include "playerCompileConfig.h"
 
-#ifdef _IRRGAME_MACOSX_
+#ifdef COMPILECONFIGMACOSX_H_
 
-#include "core/irrgamemath.h"
+#include "core/math/SharedConverter.h"
 #include "utils/ByteSwap.h"
 #include <libkern/OSByteOrder.h>
 
@@ -43,9 +43,9 @@ namespace irrgame
 
 		f32 ByteSwap::byteswap(f32 num)
 		{
-			u32 tmp = core::IR(num);
+			u32 tmp = core::SharedConverter::getInstance().convertToUInt(num);
 			tmp = bswap_32(tmp);
-			return (core::FR(tmp));
+			return (core::SharedConverter::getInstance().convertToFloat(tmp));
 		}
 
 		// prevent accidental byte swapping of chars
@@ -58,8 +58,7 @@ namespace irrgame
 		{
 			return num;
 		}
-
 	}
 }
 
-#endif /* _IRRGAME_MACOSX_ */
+#endif /* COMPILECONFIGMACOSX_H_ */

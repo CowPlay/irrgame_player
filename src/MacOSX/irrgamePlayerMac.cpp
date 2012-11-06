@@ -24,7 +24,7 @@
 //Need for handle events
 extern CFStringRef NSDefaultRunLoopMode;
 struct CGRect;
-extern CGRect CGRectMake(s32 x, s32 y, s32 w, s32 h);
+//extern CGRect CGRectMake(s32 x, s32 y, s32 w, s32 h);
 
 namespace irrgame
 {
@@ -204,15 +204,15 @@ namespace irrgame
 				}
 			}
 
-			//TODO
+			// Trying to create pixelformat for opengl, if is success - we dont need to try another mode
 			format =
 					SEND_OBJC_MESSAGE_WITH_OBJECT(SEND_OBJC_MESSAGE(CLASS("NSOpenGLPixelFormat"), "alloc"), "initWithAttributes:", windowattribs);
-
 			if (format)
 				break;
 
 		}
 
+		// Will stop here only if all 3 attemts of init driver is failure
 		IRR_ASSERT(format);
 
 		// Creating macos platform depended opengl context (container for CGLContext what can be placed on cocoa view)
@@ -257,8 +257,9 @@ namespace irrgame
 		// Setting the internal OpenGLContext as default
 		CGLSetCurrentContext(CGLContext);
 
-		//GLint newSwapInterval = 1; // enable vsync
-		//CGLSetParameter(CGLContext, kCGLCPSwapInterval, &newSwapInterval);
+		// enable vsync in OpenGL
+		GLint newSwapInterval = 1;
+		CGLSetParameter(CGLContext, kCGLCPSwapInterval, &newSwapInterval);
 	}
 
 	//! Run player internal. Must be overriden in every realization of player.

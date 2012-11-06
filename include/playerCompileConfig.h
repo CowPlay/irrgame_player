@@ -7,13 +7,8 @@
 
 #ifndef PLAYERCOMPILECONFIG_H_
 #define PLAYERCOMPILECONFIG_H_
-#include "core/base/compileConfig.h"
 
-#ifdef _IRRGAME_MACOSX_
-
-//! video
-#define VIDEO_DRIVER_OPENGL
-
-#endif
+#include "compileConfig.h"
+#include "config/playerCompileConfigMacOSX.h"
 
 #endif /* PLAYERCOMPILECONFIG_H_ */

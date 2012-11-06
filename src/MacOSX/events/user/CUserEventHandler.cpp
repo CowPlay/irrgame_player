@@ -144,17 +144,17 @@ namespace irrgame
 							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
 									& (1 << 18); //1<<18 = NSControlKeyMask
 
-					bool altWasPressed =
-							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
-									& (1 << 19); //1<<29 = NSControlKeyMask
-
-					bool cmdWasPressed =
-							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
-									& (1 << 20); //1<<20 = NSCommandKeyMask
-
-					bool fnWasPressed =
-							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
-									& (1 << 23); //1<<23 = NSCommandKeyMask
+//					bool altWasPressed =
+//							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
+//									& (1 << 19); //1<<29 = NSControlKeyMask
+//
+//					bool cmdWasPressed =
+//							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
+//									& (1 << 20); //1<<20 = NSCommandKeyMask
+//
+//					bool fnWasPressed =
+//							(u32) ((intptr_t) SEND_OBJC_MESSAGE(event, "modifierFlags"))
+//									& (1 << 23); //1<<23 = NSCommandKeyMask
 
 					if (shiftWasPressed)
 					{

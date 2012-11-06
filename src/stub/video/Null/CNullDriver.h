@@ -5,7 +5,7 @@
 #ifndef __C_VIDEO_NULL_H_INCLUDED__
 #define __C_VIDEO_NULL_H_INCLUDED__
 
-#include "video/IVideoDriver.h"
+#include "video/driver/IVideoDriver.h"
 #include "core/collections/array.h"
 
 //#include "IImagePresenter.h"
@@ -45,76 +45,40 @@ namespace irrgame
 				virtual ~CNullDriver();
 
 				//! Applications must call this method before performing any rendering.
-				/** This method can clear the back- and the z-buffer.
-				 \param color The color used for back buffer clearing
-				 \param backBuffer Specifies if the back buffer should be
-				 cleared, which means that the screen is filled with the color
-				 specified. If this parameter is false, the back buffer will
-				 not be cleared and the color parameter is ignored.
-				 \param zBuffer Specifies if the depth buffer (z buffer) should
-				 be cleared. It is not nesesarry to do so if only 2d drawing is
-				 used.
-				 \param sourceRect Pointer to a rectangle defining the source
-				 rectangle of the area to be presented. Set to null to present
-				 everything. Note: not implemented in all devices.
-				 */
-				virtual void beginScene(SColor color = SColor(255, 0, 0, 0),
-						bool backBuffer = true, bool zBuffer = true,
-						recti* sourceRect = 0);
+				virtual void beginScene(SColor color, bool backBuffer,
+						bool zBuffer, recti* sourceRect);
 
 				//! Presents the rendered image to the screen.
-				/** Applications must call this method after performing any
-				 rendering.
-				 */
 				virtual void endScene();
 
 				//! Returns FPS counter.
 				virtual IFPSCounter* getFPSCounter() const;
 
-				//TODO: make struct for fog
 				//! Sets the fog mode.
-				/** These are global values attached to each 3d object rendered,
-				 which has the fog flag enabled in its material.
-				 \param color Color of the fog
-				 \param fogType Type of fog used
-				 \param start Only used in linear fog mode (linearFog=true).
-				 Specifies where fog starts.
-				 \param end Only used in linear fog mode (linearFog=true).
-				 Specifies where fog ends.
-				 \param density Only used in exponential fog mode
-				 (linearFog=false). Must be a value between 0 and 1.
-				 \param pixelFog Set this to false for vertex fog, and true if
-				 you want per-pixel fog.
-				 \param rangeFog Set this to true to enable range-based vertex
-				 fog. The distance from the viewer is used to compute the fog,
-				 not the z-coordinate. This is better, but slower. This might not
-				 be available with all drivers and fog settings. */
-				virtual void setFog(SColor color = SColor(0, 255, 255, 255),
-						EFogType fogType = EFT_FOG_LINEAR, f32 start = 50.0f,
-						f32 end = 100.0f, f32 density = 0.01f, bool pixelFog =
-								false, bool rangeFog = false);
+				virtual void setFog(FogEntry* value);
 
 				//! Adds a new material renderer to the video device.
-				/** Use this method to extend the VideoDriver with new material
-				 types. To extend the engine using this method do the following:
-				 Derive a class from IMaterialRenderer and override the methods
-				 you need. For setting the right renderstates, you can try to
-				 get a pointer to the real rendering device using
-				 IVideoDriver::getExposedVideoData(). Add your class with
-				 IVideoDriver::addMaterialRenderer(). To use an object being
-				 displayed with your new material, set the MaterialType member of
-				 the SMaterial struct to the value returned by this method.
-				 If you simply want to create a new material using vertex and/or
-				 pixel shaders it would be easier to use the
-				 video::IGPUProgrammingServices interface which you can get
-				 using the getGPUProgrammingServices() method.
-				 \param renderer A pointer to the new renderer.
-				 \return The number of the material type which can be set in
-				 SMaterial::MaterialType to use the renderer. -1 is returned if
-				 an error occured. For example if you tried to add an material
-				 renderer to the software renderer or the null device, which do
-				 not accept material renderers. */
 				virtual s32 addMaterialRenderer(IMaterialRenderer* renderer);
+
+				//! sets a render target
+				bool setRenderTarget(ITexture* texture, bool clearBackBuffer,
+						bool clearZBuffer, SColor color);
+
+				//! Draws a pixel.
+				void drawPixel(u32 x, u32 y, const SColor & color);
+
+				//! get render target size
+				virtual const dimension2du& getCurrentRenderTargetSize() const;
+
+				//! Get the size of the screen or render window.
+				virtual const dimension2du& getScreenSize() const;
+
+				//! Draws a 2d image, using a color (if color is other then Color(255,255,255,255)) and the alpha channel of the texture if wanted.
+				virtual void draw2DImage(const video::ITexture* texture,
+						const vector2di& destPos,
+						const recti& sourceRect,
+						const recti* clipRect, SColor color,
+						bool useAlphaChannelOfTexture);
 
 			protected:
 
@@ -200,8 +164,7 @@ namespace irrgame
 //		virtual void draw3DBox(const core::aabbox3d<f32>& box,
 //			SColor color = SColor(255,255,255,255));
 //
-//		//! draws an 2d image
-//		virtual void draw2DImage(const video::ITexture* texture, const core::position2d<s32>& destPos);
+
 //
 //		//! draws a set of 2d images, using a color and the alpha
 //		/** channel of the texture if desired. The images are drawn
@@ -735,6 +698,10 @@ namespace irrgame
 
 				//list of all material renderers
 				core::array<IMaterialRenderer*> MaterialRenderers;
+				//instance which contins fog params
+				FogEntry* Fog;
+
+				dimension2du ScreenSize;
 
 //		core::array<SSurface> Textures;
 //		core::array<video::IImageLoader*> SurfaceLoader;
@@ -761,14 +728,6 @@ namespace irrgame
 //
 //		u32 TextureCreationFlags;
 //
-				f32 FogStart;
-				f32 FogEnd;
-				f32 FogDensity;
-				SColor FogColor;
-
-				EFogType FogType;
-				bool PixelFog;
-				bool RangeFog;
 
 //		SExposedVideoData ExposedData;
 //

@@ -12,6 +12,7 @@ using namespace irrgame;
 using namespace events;
 using namespace io;
 using namespace threads;
+using namespace video;
 
 #include <stdio.h>
 #include <dlfcn.h>
@@ -32,6 +33,7 @@ int main()
 
 	irrgameApp* (*createIrrgameApp)();
 
+	//open your application as static lib
 	appHandle = dlopen(player->getConfigReader()->getEntry()->AppFile.cStr(),
 			RTLD_NOW);
 

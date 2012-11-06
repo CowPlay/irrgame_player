@@ -1,23 +1,19 @@
 /*
- * IFileSystem.cpp
- *	Implementation of static methods of IFileSystem which have platform dependies
+ * SharedFileSystem.cpp
+ *	Implementation of static methods of SharedFileSystem which have platform dependies
  *  Created on: Aug 7, 2012
  *      Author: gregorytkach
  */
 #include "playerCompileConfig.h"
-#ifdef _IRRGAME_MACOSX_
 
-#include "io/IFileSystem.h"
+#ifdef COMPILECONFIGMACOSX_H_
+
+#include "io/SharedFileSystem.h"
 #include "io/IFileList.h"
+#include "io/utils/ioutils.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//#include <limits.h>
-//#include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
-//#include <unistd.h>
 
 namespace irrgame
 {
@@ -27,7 +23,8 @@ namespace irrgame
 		//! Platform dependent
 		/** \param filename Possibly relative file or directory name to query.
 		 \result Absolute filename which points to the same file. */
-		core::stringc IFileSystem::getAbsolutePath(const core::stringc& filename)
+		core::stringc SharedFileSystem::getAbsolutePath(
+				const core::stringc& filename)
 		{
 			IRR_ASSERT(filename.size() > 0);
 
@@ -58,7 +55,7 @@ namespace irrgame
 
 		//! Returns the string of the current working directory
 		//! Platform dependent
-		const core::stringc& IFileSystem::getWorkingDirectory()
+		const core::stringc& SharedFileSystem::getWorkingDirectory()
 		{
 			EFileSystemType type = FileSystemType;
 
@@ -88,7 +85,8 @@ namespace irrgame
 		}
 
 		//! Changes the current Working Directory to the given string.
-		bool IFileSystem::changeWorkingDirectoryTo(const core::stringc& value)
+		bool SharedFileSystem::changeWorkingDirectoryTo(
+				const core::stringc& value)
 		{
 			bool success = false;
 
@@ -110,13 +108,13 @@ namespace irrgame
 		}
 
 		//! determines if a file exists and would be able to be opened.
-		bool IFileSystem::existFile(const core::stringc& filename)
+		bool SharedFileSystem::existFile(const core::stringc& filename)
 		{
 			return (access(filename.cStr(), 0) != -1);
 		}
 
 		//! Creates a list of files and directories in the current working directory
-		IFileList* IFileSystem::createFileList()
+		IFileList* SharedFileSystem::createFileList()
 		{
 			IFileList* result = 0;
 			core::stringc Path = getWorkingDirectory();
@@ -183,7 +181,7 @@ namespace irrgame
 
 					for (u32 j = 0; j < merge->getFileCount(); ++j)
 					{
-						if (io::isInSameDirectory(Path,
+						if (ioutils::isInSameDirectory(Path,
 								merge->getFullFileName(j)) == 0)
 						{
 							core::stringc fullPath = merge->getFullFileName(j);
@@ -202,5 +200,5 @@ namespace irrgame
 
 	}		//end namespace io
 }		//end namespace irrgame
-#endif
+#endif /* COMPILECONFIGMACOSX_H_ */
 
