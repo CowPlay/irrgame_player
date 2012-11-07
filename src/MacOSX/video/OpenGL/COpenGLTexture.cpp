@@ -15,11 +15,12 @@ namespace irrgame
 	{
 
 		//! Default constructor
-		COpenGLTexture::COpenGLTexture(const core::stringc& path) :
-				ITexture(path), IsRenderTarget(false)
-		{
-		}
-		//! constructor for usual textures
+//		COpenGLTexture::COpenGLTexture(const core::stringc& path) :
+//				ITexture(path), IsRenderTarget(false)
+//		{
+//		}
+
+//! constructor for usual textures
 		COpenGLTexture::COpenGLTexture(IImage* origImage,
 				const core::stringc& name, void* mipmapData,
 				IVideoDriver* driver) :
@@ -79,9 +80,10 @@ namespace irrgame
 
 			ImageSize = image->getDimension();
 
-			IRR_ASSERT( ImageSize.Width && ImageSize.Height)
+			IRR_ASSERT(ImageSize.Width && ImageSize.Height);
 
 			const f32 ratio = (f32) ImageSize.Width / (f32) ImageSize.Height;
+
 			if ((ImageSize.Width > Driver->getMaxTextureSize().Width)
 					&& (ratio >= 1.0f))
 			{
@@ -95,6 +97,7 @@ namespace irrgame
 				ImageSize.Width = (u32) (Driver->getMaxTextureSize().Width
 						* ratio);
 			}
+
 			TextureSize = ImageSize.getOptimalSize(
 					!SharedOpenGLExtensionHandler::getInstance().queryFeature(
 							EVDF_TEXTURE_NPOT));
@@ -105,9 +108,10 @@ namespace irrgame
 
 		//FIXME: uncomment and fix method getTextureCreationFlag
 		//! Choose best matching color format, bagetTextureCreationFlagsed on texture creation flags
-		ECOLOR_FORMAT COpenGLTexture::getBestColorFormat(ECOLOR_FORMAT format)
+		EColorFormat COpenGLTexture::getBestColorFormat(EColorFormat format)
 		{
-			ECOLOR_FORMAT destFormat = ECF_A8R8G8B8;
+			EColorFormat destFormat = ECF_A8R8G8B8;
+
 			switch (format)
 			{
 				case ECF_A1R5G5B5:
@@ -137,15 +141,22 @@ namespace irrgame
 				switch (destFormat)
 				{
 					case ECF_A1R5G5B5:
+					{
 						destFormat = ECF_R5G6B5;
 						break;
+					}
 					case ECF_A8R8G8B8:
+					{
 						destFormat = ECF_R8G8B8;
 						break;
+					}
 					default:
+					{
 						break;
+					}
 				}
 			}
+
 			return destFormat;
 		}
 
@@ -180,8 +191,8 @@ namespace irrgame
 				InternalFormat = oldInternalFormat;
 
 			Driver->setActiveTexture(0, this);
-			//TODO: uncomment
-//			IRR_ASSERT(!Driver->testGLError());
+
+			IRR_ASSERT(!Driver->haveError());
 
 			// mipmap handling for main texture
 			if (!level && newTexture)
@@ -230,8 +241,8 @@ namespace irrgame
 				}
 				else
 #else
+				//Did not create OpenGL texture mip maps.
 				HasMipMaps=false;
-				os::Printer::log("Did not create OpenGL texture mip maps.", ELL_INFORMATION);
 #endif
 				{
 					// enable bilinear filter without mipmaps
@@ -260,8 +271,7 @@ namespace irrgame
 			}
 			image->unlock();
 
-			//TODO: uncomment
-//			IRR_ASSERT(!Driver->testGLError());
+			IRR_ASSERT(Driver->haveError());
 		}
 
 		//! return open gl texture name
@@ -271,14 +281,14 @@ namespace irrgame
 		}
 
 		//! returns color format of texture
-		ECOLOR_FORMAT COpenGLTexture::getColorFormat() const
+		EColorFormat COpenGLTexture::getColorFormat() const
 		{
 			return ColorFormat;
 		}
 
 		//! Get opengl values for the GPU texture storage
 		GLint COpenGLTexture::getOpenGLFormatAndParametersFromColorFormat(
-				ECOLOR_FORMAT format, GLint& filtering, GLenum& colorformat,
+				EColorFormat format, GLint& filtering, GLenum& colorformat,
 				GLenum& type)
 		{
 			// default
@@ -292,24 +302,28 @@ namespace irrgame
 				{
 					colorformat = GL_BGRA_EXT;
 					type = GL_UNSIGNED_SHORT_1_5_5_5_REV;
+
 					return GL_RGBA;
 				}
 				case ECF_R5G6B5:
 				{
 					colorformat = GL_BGR;
 					type = GL_UNSIGNED_SHORT_5_6_5_REV;
+
 					return GL_RGB;
 				}
 				case ECF_R8G8B8:
 				{
 					colorformat = GL_BGR;
 					type = GL_UNSIGNED_BYTE;
+
 					return GL_RGB;
 				}
 				case ECF_A8R8G8B8:
 				{
 					colorformat = GL_BGRA_EXT;
 					type = GL_UNSIGNED_INT_8_8_8_8_REV;
+
 					return GL_RGBA;
 					// Floating Point texture formats. Thanks to Patryk "Nadro" Nadrowski.
 				}
@@ -365,9 +379,15 @@ namespace irrgame
 				{
 					// unsupported format
 					IRR_ASSERT(false);
+
 					return GL_RGBA8;
 				}
 			}
+		}
+
+		EDriverType COpenGLTexture::getType() const
+		{
+			return EDT_OPENGL;
 		}
 
 	} /* namespace video */

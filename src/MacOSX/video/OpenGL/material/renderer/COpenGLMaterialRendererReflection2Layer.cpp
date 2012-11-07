@@ -81,5 +81,10 @@ namespace irrgame
 //			}
 		}
 
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererReflection2Layer(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererReflection2Layer(driver);
+		}
+
 	} /* namespace video */
 } /* namespace irrgame */

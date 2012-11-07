@@ -27,9 +27,9 @@ namespace irrgame
 		{
 			public:
 				//! Default constructor
-				COpenGLTexture(const core::stringc& path);
+//				COpenGLTexture(const core::stringc& path);
 
-				//! constructor
+				//! Default constructor
 				COpenGLTexture(IImage* surface, const core::stringc& name,
 						void* mipmapData = 0, IVideoDriver* driver = 0);
 
@@ -43,7 +43,7 @@ namespace irrgame
 				void getImageValues(IImage* image);
 
 				//! get the desired color format based on texture creation flags and the input format.
-				ECOLOR_FORMAT getBestColorFormat(ECOLOR_FORMAT format);
+				EColorFormat getBestColorFormat(EColorFormat format);
 
 				//! Get original size of the texture.
 				/** The texture is usually scaled, if it was created with an unoptimal
@@ -69,21 +69,19 @@ namespace irrgame
 				GLuint getOpenGLTextureName() const;
 
 				//! returns color format of texture
-				virtual ECOLOR_FORMAT getColorFormat() const;
+				virtual EColorFormat getColorFormat() const;
 
 				//! Get the OpenGL color format parameters based on the given Irrlicht color format
 				GLint getOpenGLFormatAndParametersFromColorFormat(
-						ECOLOR_FORMAT format, GLint& filtering,
+						EColorFormat format, GLint& filtering,
 						GLenum& colorformat, GLenum& type);
 
-				EDriverType getType() const
-				{
-					return EDT_OPENGL;
-				}
+				EDriverType getType() const;
 
 			protected:
 				IImage* Image;
 				IImage* MipImage;
+
 
 				dimension2du ImageSize;
 				dimension2du TextureSize;
@@ -95,7 +93,7 @@ namespace irrgame
 
 				bool HasMipMaps;
 
-				ECOLOR_FORMAT ColorFormat;
+				EColorFormat ColorFormat;
 				COpenGLDriver* Driver;
 
 				bool IsRenderTarget;

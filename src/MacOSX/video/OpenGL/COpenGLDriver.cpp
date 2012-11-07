@@ -13,21 +13,6 @@
 #include "SharedOpenGLExtensionHandler.h"
 #include "COpenGLTexture.h"
 
-//TODO: refactor
-#include "material/renderer/COpenGLMaterialRenderer.h"
-#include "material/renderer/COpenGLMaterialRendererDetailMap.h"
-#include "material/renderer/COpenGLMaterialRendererLightMap.h"
-#include "material/renderer/COpenGLMaterialRendererOneTextureBlend.h"
-#include "material/renderer/COpenGLMaterialRendererReflection2Layer.h"
-#include "material/renderer/COpenGLMaterialRendererSolid.h"
-#include "material/renderer/COpenGLMaterialRendererSolid2Layer.h"
-#include "material/renderer/COpenGLMaterialRendererSphereMap.h"
-#include "material/renderer/COpenGLMaterialRendererTransparentAddColor.h"
-#include "material/renderer/COpenGLMaterialRendererTransparentAlphaChannel.h"
-#include "material/renderer/COpenGLMaterialRendererTransparentAlphaChannelRef.h"
-#include "material/renderer/COpenGLMaterialRendererTransparentReflection2Layer.h"
-#include "material/renderer/COpenGLMaterialRendererTransparentVertexAlpha.h"
-
 namespace irrgame
 {
 	namespace video
@@ -68,7 +53,6 @@ namespace irrgame
 		}
 
 		//! Sets the fog mode.
-		//TODO: make struct for fog
 		void COpenGLDriver::setFog(FogEntry* value)
 		{
 			//this->Fog = value
@@ -132,10 +116,9 @@ namespace irrgame
 
 			//FIXME
 			//for (s32 i = 0; i < MaterialMaxTextures; ++i)
-//				CurrentTexture[i] = 0;
-//			// load extensions
+//				{ CurrentTexture[i] = 0; }
 
-			//
+			// load extensions
 			SharedOpenGLExtensionHandler::getInstance().initExtensions(
 					stencilBuffer);
 
@@ -148,10 +131,11 @@ namespace irrgame
 			// Setup 3D clipping planes for reducing objects calculation
 			UserClipPlanes.reallocate(
 					SharedOpenGLExtensionHandler::getInstance().MaxUserClipPlanes);
-			for (s32 i = 0;
-					i
-							< SharedOpenGLExtensionHandler::getInstance().MaxUserClipPlanes;
-					++i)
+
+			u8 maxUserClipPlanes =
+					SharedOpenGLExtensionHandler::getInstance().MaxUserClipPlanes;
+
+			for (s32 i = 0; i < maxUserClipPlanes; ++i)
 			{
 				UserClipPlanes.pushBack(SUserClipPlane());
 			}
@@ -618,19 +602,19 @@ namespace irrgame
 		{
 			// create OpenGL material renderers
 
-			IMaterialRenderer* rendererSolid = new COpenGLMaterialRendererSolid(
-					this);
+			IMaterialRenderer* rendererSolid =
+					IMaterialRenderer::createMaterialRendererSolid(this);
 			addMaterialRenderer(rendererSolid);
 			rendererSolid->drop();
 
 			IMaterialRenderer* rendererSolid2Layer =
-					new COpenGLMaterialRendererSolid(this);
+					IMaterialRenderer::createMaterialRendererSolid(this);
 			addMaterialRenderer(rendererSolid2Layer);
 			rendererSolid2Layer->drop();
 
 			// add the same renderer for all lightmap types
 			IMaterialRenderer* rendererLightMap =
-					new COpenGLMaterialRendererLightMap(this);
+					IMaterialRenderer::createMaterialRendererLightMap(this);
 
 			addMaterialRenderer(rendererLightMap); // for EMT_LIGHTMAP:
 			addMaterialRenderer(rendererLightMap); // for EMT_LIGHTMAP_ADD:
@@ -644,42 +628,49 @@ namespace irrgame
 
 			// add remaining material renderer
 			IMaterialRenderer* rendererDetailMap =
-					new COpenGLMaterialRendererDetailMap(this);
+					IMaterialRenderer::createMaterialRendererDetailMap(this);
 			addMaterialRenderer(rendererDetailMap);
 			rendererDetailMap->drop();
 
 			IMaterialRenderer* rendererSphereMap =
-					new COpenGLMaterialRendererDetailMap(this);
+					IMaterialRenderer::createMaterialRendererDetailMap(this);
 			addMaterialRenderer(rendererSphereMap);
 			rendererSphereMap->drop();
 
 			IMaterialRenderer* rendererReflection2Layer =
-					new COpenGLMaterialRendererReflection2Layer(this);
+					IMaterialRenderer::createMaterialRendererReflection2Layer(
+							this);
 			addMaterialRenderer(rendererReflection2Layer);
 			rendererReflection2Layer->drop();
 
 			IMaterialRenderer* rendererTransparentAddColor =
-					new COpenGLMaterialRendererTransparentAddColor(this);
+					IMaterialRenderer::createMaterialRendererTransparentAddColor(
+							this);
 			addMaterialRenderer(rendererTransparentAddColor);
 			rendererTransparentAddColor->drop();
 
 			IMaterialRenderer* rendererTransparentAlphaChannel =
-					new COpenGLMaterialRendererTransparentAlphaChannel(this);
+					IMaterialRenderer::createMaterialRendererTransparentAlphaChannel(
+							this);
+			IMaterialRenderer::createMaterialRendererTransparentAlphaChannel(
+					this);
 			addMaterialRenderer(rendererTransparentAlphaChannel);
 			rendererTransparentAlphaChannel->drop();
 
 			IMaterialRenderer* rendererTransparentAlphaChannelRef =
-					new COpenGLMaterialRendererTransparentAlphaChannelRef(this);
+					IMaterialRenderer::createMaterialRendererTransparentAlphaChannelRef(
+							this);
 			addMaterialRenderer(rendererTransparentAlphaChannelRef);
 			rendererTransparentAlphaChannelRef->drop();
 
 			IMaterialRenderer* rendererTransparentVertexAlpha =
-					new COpenGLMaterialRendererTransparentVertexAlpha(this);
+					IMaterialRenderer::createMaterialRendererTransparentVertexAlpha(
+							this);
 			addMaterialRenderer(rendererTransparentVertexAlpha);
 			rendererTransparentVertexAlpha->drop();
 
 			IMaterialRenderer* rendererTransparentReflection2Layer =
-					new COpenGLMaterialRendererTransparentReflection2Layer(
+					IMaterialRenderer::createMaterialRendererTransparentReflection2Layer(
 							this);
 			addMaterialRenderer(rendererTransparentReflection2Layer);
 			rendererTransparentReflection2Layer->drop();
@@ -711,7 +702,7 @@ namespace irrgame
 			//
 			//			// add basic 1 texture blending
 			//			addAndDropMaterialRenderer(
-			//					new COpenGLMaterialRenderer_ONETEXTURE_BLEND(this));
+			//					IMaterialRenderer::createMaterialRenderer_ONETEXTURE_BLEND(this));
 		}
 
 		//! set or reset render target

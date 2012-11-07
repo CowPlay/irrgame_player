@@ -22,7 +22,6 @@ namespace irrgame
 		//! Destructor
 		CirrgameMonitorPOSIX::~CirrgameMonitorPOSIX()
 		{
-
 			pthread_mutex_destroy(&Handle);
 		}
 
@@ -31,16 +30,14 @@ namespace irrgame
 		//! in the critical section using a different locked object.
 		void CirrgameMonitorPOSIX::enter()
 		{
-			//TODO:experimental
-			grab();
+			grab();		//TODO:experimental
 			pthread_mutex_lock(&Handle);
 		}
 
 		//! Releases the lock on an object. This action also marks the end of a critical section protected by the locked object.
 		void CirrgameMonitorPOSIX::exit()
 		{
-			//TODO:experimental
-			drop();
+			drop();		//TODO:experimental
 			pthread_mutex_unlock(&Handle);
 		}
 

@@ -54,5 +54,10 @@ namespace irrgame
 			return true;
 		}
 
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererTransparentAddColor(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererTransparentAddColor(driver);
+		}
+
 	} /* namespace video */
 } /* namespace irrgame */

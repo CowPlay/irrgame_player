@@ -57,5 +57,10 @@ namespace irrgame
 			return false; // this material is not really transparent because it does no blending.
 		}
 
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererTransparentAlphaChannelRef(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererTransparentAlphaChannelRef(driver);
+		}
+
 	} /* namespace video */
 } /* namespace irrgame */

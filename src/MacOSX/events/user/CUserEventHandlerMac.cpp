@@ -5,7 +5,10 @@
  *      Author: gregorytkach
  */
 
-#include "CUserEventHandler.h"
+#include "CUserEventHandlerMac.h"
+
+#ifdef COMPILECONFIGMACOSX_H_
+
 #include "events/user/IUserEvent.h"
 
 #include <objc/message.h>
@@ -20,7 +23,7 @@ namespace irrgame
 	{
 
 		//! Default constructor
-		CUserEventHandler::CUserEventHandler() :
+		CUserEventHandlerMac::CUserEventHandlerMac() :
 				IUserEventHandler()
 		{
 			initKeyMap();
@@ -29,11 +32,11 @@ namespace irrgame
 		}
 
 		//! Destructor
-		CUserEventHandler::~CUserEventHandler()
+		CUserEventHandlerMac::~CUserEventHandlerMac()
 		{
 		}
 
-		void CUserEventHandler::initKeyMap()
+		void CUserEventHandlerMac::initKeyMap()
 		{
 			KeyMap.insert(0xF700, EUK_UP);		//NSUpArrowFunctionKey
 			KeyMap.insert(0xF701, EUK_DOWN);	//NSDownArrowFunctionKey
@@ -78,13 +81,13 @@ namespace irrgame
 		}
 
 		//Platform dependent
-		void CUserEventHandler::initCursorsInfo()
+		void CUserEventHandlerMac::initCursorsInfo()
 		{
 			CursorsInfo.insert(0, new SCursorInfo(0, ECS_RELEASED));
 		}
 
 		//! This func must call from player when any key event from user detected.
-		void CUserEventHandler::handleKeyEvent(void* e)
+		void CUserEventHandlerMac::handleKeyEvent(void* e)
 		{
 			IUserEvent* userEvent;
 
@@ -184,7 +187,7 @@ namespace irrgame
 
 		//! This func must call from player when any mouse event from user detected.
 		//Platform dependent
-		void CUserEventHandler::handleMouseEvent(void* e)
+		void CUserEventHandlerMac::handleMouseEvent(void* e)
 		{
 			IUserEvent* userEvent;
 			SCursorInfo* cursorInfo = CursorsInfo[0];
@@ -267,7 +270,7 @@ namespace irrgame
 		//! Internal function. Please do not use.
 		IUserEventHandler * createUserEventsHandler()
 		{
-			return new CUserEventHandler;
+			return new CUserEventHandlerMac;
 		}
 
 	} /* namespace events */
@@ -277,3 +280,5 @@ namespace irrgame
 #undef SEND_OBJC_MESSAGE
 #undef CLASS
 #undef SELECTOR
+
+#endif /* COMPILECONFIGMACOSX_H_ */

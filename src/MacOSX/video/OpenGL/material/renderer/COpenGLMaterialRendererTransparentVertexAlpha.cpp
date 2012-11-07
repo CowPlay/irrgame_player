@@ -80,5 +80,10 @@ namespace irrgame
 			return true;
 		}
 
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererTransparentVertexAlpha(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererTransparentVertexAlpha(driver);
+		}
+
 	} /* namespace video */
 } /* namespace irrgame */

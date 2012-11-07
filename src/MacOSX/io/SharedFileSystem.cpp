@@ -193,7 +193,9 @@ namespace irrgame
 			}
 
 			if (result)
+			{
 				result->sort();
+			}
 
 			return result;
 		}

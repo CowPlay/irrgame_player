@@ -160,5 +160,10 @@ namespace irrgame
 			//					}
 		}
 
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererLightMap(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererLightMap(driver);
+		}
+
 	} /* namespace video */
 } /* namespace irrgame */

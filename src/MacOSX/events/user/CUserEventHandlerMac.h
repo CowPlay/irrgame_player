@@ -5,6 +5,10 @@
  *      Author: gregorytkach
  */
 
+#include "playerCompileConfig.h"
+
+#ifdef COMPILECONFIGMACOSX_H_
+
 #ifndef CUSEREVENTHANDLER_H_
 #define CUSEREVENTHANDLER_H_
 
@@ -15,14 +19,14 @@ namespace irrgame
 	namespace events
 	{
 
-		class CUserEventHandler: public IUserEventHandler
+		class CUserEventHandlerMac: public IUserEventHandler
 		{
 			public:
 				//! Default constructor
-				CUserEventHandler();
+				CUserEventHandlerMac();
 
 				//! Destructor
-				virtual ~CUserEventHandler();
+				virtual ~CUserEventHandlerMac();
 
 				//! This func must call from player when any key event from user detected.
 				//Platform dependent
@@ -41,4 +45,7 @@ namespace irrgame
 
 	} /* namespace events */
 } /* namespace irrgame */
+
 #endif /* CUSEREVENTHANDLER_H_ */
+
+#endif /* COMPILECONFIGMACOSX_H_ */

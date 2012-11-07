@@ -220,6 +220,11 @@ namespace irrgame
 
 			return result;
 		}
+
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererOneTextureBlend(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererOneTextureBlend(driver);
+		}
 	}/* namespace video */
 }/* namespace irrgame */
 

@@ -55,5 +55,10 @@ namespace irrgame
 //			glDisable (GL_TEXTURE_GEN_S);
 //			glDisable (GL_TEXTURE_GEN_T);
 		}
+
+		IMaterialRenderer* IMaterialRenderer::createMaterialRendererSphereMap(IVideoDriver* driver)
+		{
+			return new COpenGLMaterialRendererSphereMap(driver);
+		}
 	} /* namespace video */
 } /* namespace irrgame */
