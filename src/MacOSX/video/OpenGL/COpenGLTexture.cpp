@@ -20,7 +20,7 @@ namespace irrgame
 //		{
 //		}
 
-//! constructor for usual textures
+		//! constructor for usual textures
 		COpenGLTexture::COpenGLTexture(IImage* origImage,
 				const core::stringc& name, void* mipmapData,
 				IVideoDriver* driver) :
@@ -271,7 +271,7 @@ namespace irrgame
 			}
 			image->unlock();
 
-			IRR_ASSERT(Driver->haveError());
+			IRR_ASSERT(!Driver->haveError());
 		}
 
 		//! return open gl texture name

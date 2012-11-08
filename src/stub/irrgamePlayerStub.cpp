@@ -79,6 +79,17 @@ namespace irrgame
 		//start events handler
 		UserEventsHandler->startEventProcess();
 
+		io::IReadFile* file =
+				io::SharedFileSystem::getInstance().createReadFile(
+						"/Users/gregorytkach/workspace/irrgame_sdk/src/vendors/jpeglib/testimg.jpg");
+
+		video::IImage* img = video::IImage::createImage(file);
+
+		video::ITexture* t =
+				new video::COpenGLTexture(img,
+						"/Users/gregorytkach/workspace/irrgame_sdk/src/vendors/jpeglib/testimg.jpg",
+						0, VideoDriver);
+
 		while (runInternal())
 		{
 			utils::ITimer::tick();
@@ -86,6 +97,9 @@ namespace irrgame
 			events::SharedEventScheduler::getInstance().proceedNextRealTimeEvent();
 
 			VideoDriver->beginScene();
+
+			VideoDriver->draw2DImage(t, vector2di(50, 50),
+					recti(50, 50, 150, 150));
 //scenemanager->drawAll();
 
 			VideoDriver->endScene();

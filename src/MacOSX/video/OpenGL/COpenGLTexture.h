@@ -29,6 +29,7 @@ namespace irrgame
 				//! Default constructor
 //				COpenGLTexture(const core::stringc& path);
 
+			//TODO: why driver = 0 by default?
 				//! Default constructor
 				COpenGLTexture(IImage* surface, const core::stringc& name,
 						void* mipmapData = 0, IVideoDriver* driver = 0);
