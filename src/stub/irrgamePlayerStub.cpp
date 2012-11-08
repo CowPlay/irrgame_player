@@ -108,5 +108,5 @@ namespace irrgame
 		//stop events handler
 		UserEventsHandler->stopEventProcess();
 	}
-}
+} /*end namespace irrgame*/
 
