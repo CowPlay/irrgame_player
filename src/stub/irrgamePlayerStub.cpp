@@ -81,13 +81,13 @@ namespace irrgame
 
 		io::IReadFile* file =
 				io::SharedFileSystem::getInstance().createReadFile(
-						"/Users/gregorytkach/workspace/irrgame_sdk/src/vendors/jpeglib/testimg.jpg");
+						"/Users/gregorytkach/workspace/irrgame_sdk/src/vendors/libpng/pngtest.png");
 
 		video::IImage* img = video::IImage::createImage(file);
 
 		video::ITexture* t =
 				new video::COpenGLTexture(img,
-						"/Users/gregorytkach/workspace/irrgame_sdk/src/vendors/jpeglib/testimg.jpg",
+						"/Users/gregorytkach/workspace/irrgame_sdk/src/vendors/libpng/pngbar.png",
 						0, VideoDriver);
 
 		while (runInternal())
