@@ -591,9 +591,9 @@ namespace irrgame
 		{
 			// opengl needs an array of doubles for the plane equation
 			double clip_plane[4];
-			clip_plane[0] = UserClipPlanes[index].Plane.Normal.X();
-			clip_plane[1] = UserClipPlanes[index].Plane.Normal.Y();
-			clip_plane[2] = UserClipPlanes[index].Plane.Normal.Z();
+			clip_plane[0] = UserClipPlanes[index].Plane.Normal.X;
+			clip_plane[1] = UserClipPlanes[index].Plane.Normal.Y;
+			clip_plane[2] = UserClipPlanes[index].Plane.Normal.Z;
 			clip_plane[3] = UserClipPlanes[index].Plane.D;
 			glClipPlane(GL_CLIP_PLANE0 + index, clip_plane);
 		}
@@ -819,44 +819,42 @@ namespace irrgame
 			dimension2di sourceSize(sourceRect.getSize());
 			if (clipRect)
 			{
-				if (targetPos.X() < clipRect->UpperLeftCorner.X())
+				if (targetPos.X < clipRect->UpperLeftCorner.X)
 				{
-					sourceSize.Width += targetPos.X()
-							- clipRect->UpperLeftCorner.X();
+					sourceSize.Width += targetPos.X
+							- clipRect->UpperLeftCorner.X;
 					if (sourceSize.Width <= 0)
 						return;
 
-					sourcePos.X() -= targetPos.X()
-							- clipRect->UpperLeftCorner.X();
-					targetPos.X() = clipRect->UpperLeftCorner.X();
+					sourcePos.X -= targetPos.X - clipRect->UpperLeftCorner.X;
+					targetPos.X = clipRect->UpperLeftCorner.X;
 				}
 
-				if (targetPos.X() + sourceSize.Width
-						> clipRect->LowerRightCorner.X())
+				if (targetPos.X + sourceSize.Width
+						> clipRect->LowerRightCorner.X)
 				{
-					sourceSize.Width -= (targetPos.X() + sourceSize.Width)
-							- clipRect->LowerRightCorner.X();
+					sourceSize.Width -= (targetPos.X + sourceSize.Width)
+							- clipRect->LowerRightCorner.X;
 					if (sourceSize.Width <= 0)
 						return;
 				}
 
-				if (targetPos.Y() < clipRect->UpperLeftCorner.Y())
+				if (targetPos.Y < clipRect->UpperLeftCorner.Y)
 				{
-					sourceSize.Height += targetPos.Y()
-							- clipRect->UpperLeftCorner.Y();
+					sourceSize.Height += targetPos.Y
+							- clipRect->UpperLeftCorner.Y;
 					if (sourceSize.Height <= 0)
 						return;
 
-					sourcePos.Y() -= targetPos.Y()
-							- clipRect->UpperLeftCorner.Y();
-					targetPos.Y() = clipRect->UpperLeftCorner.Y();
+					sourcePos.Y -= targetPos.Y - clipRect->UpperLeftCorner.Y;
+					targetPos.Y = clipRect->UpperLeftCorner.Y;
 				}
 
-				if (targetPos.Y() + sourceSize.Height
-						> clipRect->LowerRightCorner.Y())
+				if (targetPos.Y + sourceSize.Height
+						> clipRect->LowerRightCorner.Y)
 				{
-					sourceSize.Height -= (targetPos.Y() + sourceSize.Height)
-							- clipRect->LowerRightCorner.Y();
+					sourceSize.Height -= (targetPos.Y + sourceSize.Height)
+							- clipRect->LowerRightCorner.Y;
 					if (sourceSize.Height <= 0)
 						return;
 				}
@@ -864,40 +862,39 @@ namespace irrgame
 
 			// clip these coordinates
 
-			if (targetPos.X() < 0)
+			if (targetPos.X < 0)
 			{
-				sourceSize.Width += targetPos.X();
+				sourceSize.Width += targetPos.X;
 				if (sourceSize.Width <= 0)
 					return;
 
-				sourcePos.X() -= targetPos.X();
-				targetPos.X() = 0;
+				sourcePos.X -= targetPos.X;
+				targetPos.X = 0;
 			}
 
 			const dimension2du& renderTargetSize = getCurrentRenderTargetSize();
 
-			if (targetPos.X() + sourceSize.Width > (s32) renderTargetSize.Width)
+			if (targetPos.X + sourceSize.Width > (s32) renderTargetSize.Width)
 			{
-				sourceSize.Width -= (targetPos.X() + sourceSize.Width)
+				sourceSize.Width -= (targetPos.X + sourceSize.Width)
 						- renderTargetSize.Width;
 				if (sourceSize.Width <= 0)
 					return;
 			}
 
-			if (targetPos.Y() < 0)
+			if (targetPos.Y < 0)
 			{
-				sourceSize.Height += targetPos.Y();
+				sourceSize.Height += targetPos.Y;
 				if (sourceSize.Height <= 0)
 					return;
 
-				sourcePos.Y() -= targetPos.Y();
-				targetPos.Y() = 0;
+				sourcePos.Y -= targetPos.Y;
+				targetPos.Y = 0;
 			}
 
-			if (targetPos.Y() + sourceSize.Height
-					> (s32) renderTargetSize.Height)
+			if (targetPos.Y + sourceSize.Height > (s32) renderTargetSize.Height)
 			{
-				sourceSize.Height -= (targetPos.Y() + sourceSize.Height)
+				sourceSize.Height -= (targetPos.Y + sourceSize.Height)
 						- renderTargetSize.Height;
 				if (sourceSize.Height <= 0)
 					return;
@@ -911,10 +908,10 @@ namespace irrgame
 			const dimension2du& ss = texture->getOriginalSize();
 			const f32 invW = 1.f / static_cast<f32>(ss.Width);
 			const f32 invH = 1.f / static_cast<f32>(ss.Height);
-			const rectf tcoords(sourcePos.X() * invW,
-					(isRTT ? (sourcePos.Y() + sourceSize.Height) : sourcePos.Y())
-							* invH, (sourcePos.X() + sourceSize.Width) * invW,
-					(isRTT ? sourcePos.Y() : (sourcePos.Y() + sourceSize.Height))
+			const rectf tcoords(sourcePos.X * invW,
+					(isRTT ? (sourcePos.Y + sourceSize.Height) : sourcePos.Y)
+							* invH, (sourcePos.X + sourceSize.Width) * invW,
+					(isRTT ? sourcePos.Y : (sourcePos.Y + sourceSize.Height))
 							* invH);
 
 			const recti poss(targetPos, sourceSize);
@@ -933,25 +930,22 @@ namespace irrgame
 					color.getAlpha());
 			glBegin(GL_QUADS);
 
-			glTexCoord2f(tcoords.UpperLeftCorner.X(),
-					tcoords.UpperLeftCorner.Y());
-			glVertex2f(GLfloat(poss.UpperLeftCorner.X()),
-					GLfloat(poss.UpperLeftCorner.Y()));
+			glTexCoord2f(tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y);
+			glVertex2f(GLfloat(poss.UpperLeftCorner.X),
+					GLfloat(poss.UpperLeftCorner.Y));
 
-			glTexCoord2f(tcoords.LowerRightCorner.X(),
-					tcoords.UpperLeftCorner.Y());
-			glVertex2f(GLfloat(poss.LowerRightCorner.X()),
-					GLfloat(poss.UpperLeftCorner.Y()));
+			glTexCoord2f(tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y);
+			glVertex2f(GLfloat(poss.LowerRightCorner.X),
+					GLfloat(poss.UpperLeftCorner.Y));
 
-			glTexCoord2f(tcoords.LowerRightCorner.X(),
-					tcoords.LowerRightCorner.Y());
-			glVertex2f(GLfloat(poss.LowerRightCorner.X()),
-					GLfloat(poss.LowerRightCorner.Y()));
+			glTexCoord2f(tcoords.LowerRightCorner.X,
+					tcoords.LowerRightCorner.Y);
+			glVertex2f(GLfloat(poss.LowerRightCorner.X),
+					GLfloat(poss.LowerRightCorner.Y));
 
-			glTexCoord2f(tcoords.UpperLeftCorner.X(),
-					tcoords.LowerRightCorner.Y());
-			glVertex2f(GLfloat(poss.UpperLeftCorner.X()),
-					GLfloat(poss.LowerRightCorner.Y()));
+			glTexCoord2f(tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y);
+			glVertex2f(GLfloat(poss.UpperLeftCorner.X),
+					GLfloat(poss.LowerRightCorner.Y));
 
 			glEnd();
 		}

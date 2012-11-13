@@ -21,10 +21,26 @@ using namespace video;
 
 arrayi mass;
 
+int some(int a)
+{
+	return 0;
+}
+
 #define signature_app_creator irrgameApp* (*)()
 
 int main()
 {
+
+	typedef delegate<int, int> Tdel;
+
+	Tdel* d = new Tdel;
+
+	(*d) += NewDelegate(&some);
+	(*d) += NewDelegate(&some);
+	(*d) += NewDelegate(&some);
+
+	(*d) -= NewDelegate(&some);
+
 	irrgamePlayer * player = createIrrgamePlayer();
 
 	player->getConfigReader()->read(FILE_CONFIG);

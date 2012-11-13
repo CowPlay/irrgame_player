@@ -11,7 +11,7 @@
 #ifdef COMPILECONFIGMACOSX_H_
 
 #include "core/math/SharedConverter.h"
-#include "utils/ByteSwap.h"
+#include "utils/StaticByteSwap.h"
 #include <libkern/OSByteOrder.h>
 
 #define bswap_16(X) OSReadSwapInt16(&X,0)
@@ -21,27 +21,27 @@ namespace irrgame
 {
 	namespace utils
 	{
-		u16 ByteSwap::byteswap(u16 num)
+		u16 StaticByteSwap::byteswap(u16 num)
 		{
 			return bswap_16(num);
 		}
 
-		s16 ByteSwap::byteswap(s16 num)
+		s16 StaticByteSwap::byteswap(s16 num)
 		{
 			return bswap_16(num);
 		}
 
-		u32 ByteSwap::byteswap(u32 num)
+		u32 StaticByteSwap::byteswap(u32 num)
 		{
 			return bswap_32(num);
 		}
 
-		s32 ByteSwap::byteswap(s32 num)
+		s32 StaticByteSwap::byteswap(s32 num)
 		{
 			return bswap_32(num);
 		}
 
-		f32 ByteSwap::byteswap(f32 num)
+		f32 StaticByteSwap::byteswap(f32 num)
 		{
 			u32 tmp = core::SharedConverter::getInstance().convertToUInt(num);
 			tmp = bswap_32(tmp);
@@ -49,12 +49,12 @@ namespace irrgame
 		}
 
 		// prevent accidental byte swapping of chars
-		u8 ByteSwap::byteswap(u8 num)
+		u8 StaticByteSwap::byteswap(u8 num)
 		{
 			return num;
 		}
 
-		c8 ByteSwap::byteswap(c8 num)
+		c8 StaticByteSwap::byteswap(c8 num)
 		{
 			return num;
 		}
